@@ -454,17 +454,10 @@ function displaySeason(
         ??
         "";
 
-
-    dataConfidence.textContent =
-        profile.data_confidence
-        ?
-        `${
-            profile.data_confidence
-        } confidence`
-        :
-        "";
-
-}
+dataConfidence.textContent =
+    profile.data_confidence
+    ??
+    "Not available";
 
 
 // ----------------------------------------------------------
@@ -653,3 +646,5 @@ seasonSelect.addEventListener(
 // ----------------------------------------------------------
 
 loadPlayer();
+
+
