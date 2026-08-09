@@ -1,17 +1,17 @@
 // ==========================================================
 // COURTINDEX
 // PLAYER PROFILE
+// Complete replacement player.js
 // ==========================================================
 
+
+// ==========================================================
+// PAGE ELEMENTS
+// ==========================================================
 
 const playerNameElement =
     document.getElementById(
         "player-name"
-    );
-
-const careerLabelElement =
-    document.getElementById(
-        "player-career-label"
     );
 
 const careerSummaryElement =
@@ -59,13 +59,32 @@ const dataConfidence =
         "data-confidence"
     );
 
+const dataQualityButton =
+    document.getElementById(
+        "data-quality-info"
+    );
+
+const dataQualityExplanation =
+    document.getElementById(
+        "data-quality-explanation"
+    );
+
+
+// ==========================================================
+// STATE
+// ==========================================================
 
 let playerProfiles = [];
 
 
-// ----------------------------------------------------------
+// ==========================================================
 // GET PLAYER ID FROM URL
-// ----------------------------------------------------------
+//
+// Example:
+//
+// player.html?id=3149391
+//
+// ==========================================================
 
 const urlParams =
     new URLSearchParams(
@@ -78,25 +97,35 @@ const playerId =
     );
 
 
-// ----------------------------------------------------------
+// ==========================================================
 // FORMATTERS
-// ----------------------------------------------------------
+// ==========================================================
 
 function formatNumber(
     value,
     decimals = 1
 ) {
 
-    const number =
-        Number(
-            value
-        );
-
     if (
         value === null
         ||
         value === undefined
         ||
+        value === ""
+    ) {
+
+        return "—";
+
+    }
+
+
+    const number =
+        Number(
+            value
+        );
+
+
+    if (
         Number.isNaN(
             number
         )
@@ -105,6 +134,7 @@ function formatNumber(
         return "—";
 
     }
+
 
     return number.toFixed(
         decimals
@@ -118,16 +148,26 @@ function formatPercent(
     decimals = 1
 ) {
 
-    const number =
-        Number(
-            value
-        );
-
     if (
         value === null
         ||
         value === undefined
         ||
+        value === ""
+    ) {
+
+        return "—";
+
+    }
+
+
+    const number =
+        Number(
+            value
+        );
+
+
+    if (
         Number.isNaN(
             number
         )
@@ -136,6 +176,7 @@ function formatPercent(
         return "—";
 
     }
+
 
     return (
         number
@@ -150,9 +191,9 @@ function formatPercent(
 }
 
 
-// ----------------------------------------------------------
+// ==========================================================
 // STAT CARD
-// ----------------------------------------------------------
+// ==========================================================
 
 function createStatCard(
     label,
@@ -178,9 +219,9 @@ function createStatCard(
 }
 
 
-// ----------------------------------------------------------
+// ==========================================================
 // RATING ROW
-// ----------------------------------------------------------
+// ==========================================================
 
 function createRatingRow(
     label,
@@ -191,6 +232,7 @@ function createRatingRow(
         Number(
             value
         );
+
 
     const safeValue =
         Number.isFinite(
@@ -208,6 +250,18 @@ function createRatingRow(
         0;
 
 
+    const displayValue =
+        Number.isFinite(
+            numericValue
+        )
+        ?
+        numericValue.toFixed(
+            1
+        )
+        :
+        "—";
+
+
     return `
 
         <div class="rating-row">
@@ -219,12 +273,7 @@ function createRatingRow(
                 </span>
 
                 <strong>
-                    ${
-                        formatNumber(
-                            value,
-                            1
-                        )
-                    }
+                    ${displayValue}
                 </strong>
 
             </div>
@@ -234,10 +283,7 @@ function createRatingRow(
 
                 <div
                     class="rating-fill"
-                    style="
-                        width:
-                        ${safeValue}%;
-                    "
+                    style="width: ${safeValue}%"
                 >
                 </div>
 
@@ -250,9 +296,9 @@ function createRatingRow(
 }
 
 
-// ----------------------------------------------------------
-// DISPLAY SEASON
-// ----------------------------------------------------------
+// ==========================================================
+// DISPLAY SELECTED SEASON
+// ==========================================================
 
 function displaySeason(
     season
@@ -273,15 +319,24 @@ function displaySeason(
 
     if (!profile) {
 
+        console.error(
+            "Season profile not found:",
+            season
+        );
+
         return;
 
     }
 
 
+    // ------------------------------------------------------
+    // Team / games information
+    // ------------------------------------------------------
+
     seasonMeta.innerHTML = `
 
         <span>
-            ${profile.team ?? "—"}
+            ${profile.team ?? "Team unavailable"}
         </span>
 
         <span>
@@ -290,6 +345,10 @@ function displaySeason(
 
     `;
 
+
+    // ------------------------------------------------------
+    // Traditional statistics
+    // ------------------------------------------------------
 
     traditionalStats.innerHTML = [
 
@@ -340,6 +399,10 @@ function displaySeason(
     );
 
 
+    // ------------------------------------------------------
+    // Advanced statistics
+    // ------------------------------------------------------
+
     advancedStats.innerHTML = [
 
         createStatCard(
@@ -388,6 +451,10 @@ function displaySeason(
         ""
     );
 
+
+    // ------------------------------------------------------
+    // Custom ratings
+    // ------------------------------------------------------
 
     const ratings = [
 
@@ -443,6 +510,10 @@ function displaySeason(
         );
 
 
+    // ------------------------------------------------------
+    // Overall
+    // ------------------------------------------------------
+
     overallScore.textContent =
         formatNumber(
             profile.season_overall
@@ -452,24 +523,39 @@ function displaySeason(
     seasonArchetype.textContent =
         profile.season_archetype
         ??
-        "";
-
-dataConfidence.textContent =
-    profile.data_confidence
-    ??
-    "Not available";
+        "Season profile";
 
 
-// ----------------------------------------------------------
-// LOAD PLAYER
-// ----------------------------------------------------------
+    // ------------------------------------------------------
+    // Data Quality
+    // ------------------------------------------------------
+
+    dataConfidence.textContent =
+        profile.data_confidence
+        ??
+        "Not available";
+
+}
+
+
+// ==========================================================
+// LOAD PLAYER DATA
+// ==========================================================
 
 async function loadPlayer() {
+
+    // ------------------------------------------------------
+    // No player ID
+    // ------------------------------------------------------
 
     if (!playerId) {
 
         playerNameElement.textContent =
             "Player not found";
+
+
+        careerSummaryElement.textContent =
+            "No player ID was provided.";
 
         return;
 
@@ -478,16 +564,20 @@ async function loadPlayer() {
 
     try {
 
+        // --------------------------------------------------
+        // Load JSON
+        // --------------------------------------------------
+
         const response =
             await fetch(
-                "data/player_season_profiles.json"
+                "./data/player_season_profiles.json"
             );
 
 
         if (!response.ok) {
 
             throw new Error(
-                "Could not load player data."
+                `Could not load player data. HTTP ${response.status}`
             );
 
         }
@@ -496,6 +586,16 @@ async function loadPlayer() {
         const allProfiles =
             await response.json();
 
+
+        console.log(
+            "Profiles loaded:",
+            allProfiles.length
+        );
+
+
+        // --------------------------------------------------
+        // Find this player's seasons
+        // --------------------------------------------------
 
         playerProfiles =
             allProfiles
@@ -524,6 +624,22 @@ async function loadPlayer() {
             );
 
 
+        console.log(
+            "Player ID:",
+            playerId
+        );
+
+
+        console.log(
+            "Player seasons:",
+            playerProfiles.length
+        );
+
+
+        // --------------------------------------------------
+        // Player missing from JSON
+        // --------------------------------------------------
+
         if (
             playerProfiles.length
             ===
@@ -533,24 +649,47 @@ async function loadPlayer() {
             playerNameElement.textContent =
                 "Player not found";
 
+
+            careerSummaryElement.textContent =
+                "No season data was found for this player.";
+
             return;
 
         }
 
+
+        // --------------------------------------------------
+        // Latest profile
+        // --------------------------------------------------
 
         const latestProfile =
             playerProfiles[0];
 
 
         playerNameElement.textContent =
-            latestProfile.display_name;
+            latestProfile.display_name
+            ??
+            latestProfile.player_name
+            ??
+            "Player";
 
+
+        // --------------------------------------------------
+        // Career range
+        // --------------------------------------------------
 
         const seasons =
-            playerProfiles.map(
+            playerProfiles
+            .map(
                 profile =>
                     Number(
                         profile.season
+                    )
+            )
+            .filter(
+                season =>
+                    Number.isFinite(
+                        season
                     )
             );
 
@@ -567,10 +706,6 @@ async function loadPlayer() {
             );
 
 
-        careerLabelElement.textContent =
-            "Player Profile";
-
-
         careerSummaryElement.textContent =
             `Career seasons in archive: ${
                 firstSeason
@@ -579,21 +714,19 @@ async function loadPlayer() {
             }`;
 
 
+        // --------------------------------------------------
+        // Season dropdown
+        // --------------------------------------------------
+
         seasonSelect.innerHTML =
             playerProfiles
             .map(
                 profile => `
 
                     <option
-                        value="${
-                            profile.season
-                        }"
+                        value="${profile.season}"
                     >
-
-                        ${
-                            profile.season
-                        }
-
+                        ${profile.season}
                     </option>
 
                 `
@@ -601,6 +734,14 @@ async function loadPlayer() {
             .join(
                 ""
             );
+
+
+        // --------------------------------------------------
+        // Display newest season initially
+        // --------------------------------------------------
+
+        seasonSelect.value =
+            latestProfile.season;
 
 
         displaySeason(
@@ -613,6 +754,7 @@ async function loadPlayer() {
     ) {
 
         console.error(
+            "PLAYER PAGE ERROR:",
             error
         );
 
@@ -620,14 +762,18 @@ async function loadPlayer() {
         playerNameElement.textContent =
             "Unable to load player";
 
+
+        careerSummaryElement.textContent =
+            "The player data could not be loaded. Please try again.";
+
     }
 
 }
 
 
-// ----------------------------------------------------------
-// SEASON CHANGE
-// ----------------------------------------------------------
+// ==========================================================
+// SEASON DROPDOWN
+// ==========================================================
 
 seasonSelect.addEventListener(
     "change",
@@ -641,26 +787,103 @@ seasonSelect.addEventListener(
 );
 
 
-// ----------------------------------------------------------
-// START
-// ----------------------------------------------------------
+// ==========================================================
+// TRADITIONAL / ADVANCED TABS
+// ==========================================================
 
-loadPlayer();
+const statTabs =
+    document.querySelectorAll(
+        ".stat-tab"
+    );
 
-// ----------------------------------------------------------
+
+const statPanels = {
+
+    traditional:
+        document.getElementById(
+            "traditional-stats"
+        ),
+
+    advanced:
+        document.getElementById(
+            "advanced-stats"
+        )
+
+};
+
+
+statTabs.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                // Remove active state from buttons
+                statTabs.forEach(
+                    tab => {
+
+                        tab.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                // Hide panels
+                Object.values(
+                    statPanels
+                ).forEach(
+                    panel => {
+
+                        if (panel) {
+
+                            panel.classList.remove(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                // Selected button
+                button.classList.add(
+                    "active"
+                );
+
+
+                // Selected panel
+                const selectedTab =
+                    button.dataset.tab;
+
+
+                if (
+                    statPanels[
+                        selectedTab
+                    ]
+                ) {
+
+                    statPanels[
+                        selectedTab
+                    ].classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// ==========================================================
 // DATA QUALITY EXPLANATION
-// ----------------------------------------------------------
-
-const dataQualityButton =
-    document.getElementById(
-        "data-quality-info"
-    );
-
-const dataQualityExplanation =
-    document.getElementById(
-        "data-quality-explanation"
-    );
-
+// ==========================================================
 
 if (
     dataQualityButton
@@ -672,97 +895,44 @@ if (
         "click",
         () => {
 
-            const isHidden =
+            const currentlyHidden =
                 dataQualityExplanation.hidden;
 
 
             dataQualityExplanation.hidden =
-                !isHidden;
+                !currentlyHidden;
 
 
             dataQualityButton.setAttribute(
                 "aria-expanded",
                 String(
-                    isHidden
+                    currentlyHidden
                 )
             );
 
 
-            dataQualityButton.textContent =
-                isHidden
-                ?
-                "Hide explanation"
-                :
-                "What does this mean?";
+            if (
+                currentlyHidden
+            ) {
+
+                dataQualityButton.textContent =
+                    "Hide explanation";
+
+            } else {
+
+                dataQualityButton.textContent =
+                    "What does this mean?";
+
+            }
 
         }
     );
 
 }
-// ----------------------------------------------------------
-// STAT TABS
-// ----------------------------------------------------------
-
-const statTabs =
-    document.querySelectorAll(
-        ".stat-tab"
-    );
-
-const statPanels = {
-    traditional:
-        document.getElementById(
-            "traditional-stats"
-        ),
-
-    advanced:
-        document.getElementById(
-            "advanced-stats"
-        )
-};
 
 
-statTabs.forEach(
-    button => {
+// ==========================================================
+// START PAGE
+// ==========================================================
 
-        button.addEventListener(
-            "click",
-            () => {
-
-                statTabs.forEach(
-                    tab =>
-                        tab.classList.remove(
-                            "active"
-                        )
-                );
-
-
-                Object.values(
-                    statPanels
-                ).forEach(
-                    panel =>
-                        panel.classList.remove(
-                            "active"
-                        )
-                );
-
-
-                button.classList.add(
-                    "active"
-                );
-
-
-                const selectedTab =
-                    button.dataset.tab;
-
-
-                statPanels[
-                    selectedTab
-                ].classList.add(
-                    "active"
-                );
-
-            }
-        );
-
-    }
-);
+loadPlayer();
