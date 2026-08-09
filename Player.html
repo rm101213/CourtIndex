@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Player | CourtIndex</title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+    <div class="container nav-container">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            CourtIndex
+        </a>
+
+
+        <nav class="main-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="players.html">
+                Players
+            </a>
+
+            <a href="#">
+                Compare
+            </a>
+
+            <a href="#">
+                Archive
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main id="player-page">
+
+
+    <section class="player-profile-header">
+
+        <div class="container">
+
+            <a
+                href="players.html"
+                class="back-link"
+            >
+                ← Players
+            </a>
+
+
+            <p
+                id="player-career-label"
+                class="eyebrow"
+            >
+            </p>
+
+
+            <h1 id="player-name">
+                Loading player...
+            </h1>
+
+
+            <p
+                id="player-career-summary"
+                class="player-profile-summary"
+            >
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="season-section">
+
+        <div class="container">
+
+
+            <div class="season-controls">
+
+                <div>
+
+                    <label for="season-select">
+                        Season
+                    </label>
+
+
+                    <select id="season-select">
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="season-meta"
+                class="season-meta"
+            >
+            </div>
+
+
+            <section class="profile-block">
+
+                <div class="block-heading">
+
+                    <p class="eyebrow">
+                        Traditional
+                    </p>
+
+                    <h2>
+                        Season Performance
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="traditional-stats"
+                    class="stat-grid"
+                >
+                </div>
+
+            </section>
+
+
+            <section class="profile-block">
+
+                <div class="block-heading">
+
+                    <p class="eyebrow">
+                        Efficiency
+                    </p>
+
+                    <h2>
+                        Advanced View
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="advanced-stats"
+                    class="stat-grid"
+                >
+                </div>
+
+            </section>
+
+
+            <section class="profile-block">
+
+                <div class="block-heading">
+
+                    <p class="eyebrow">
+                        Custom Ratings
+                    </p>
+
+                    <h2>
+                        Season Profile
+                    </h2>
+
+                </div>
+
+
+                <div class="ratings-layout">
+
+
+                    <div
+                        id="rating-list"
+                        class="rating-list"
+                    >
+                    </div>
+
+
+                    <div class="overall-card">
+
+                        <p class="overall-label">
+                            Overall
+                        </p>
+
+                        <p
+                            id="overall-score"
+                            class="overall-score"
+                        >
+                            —
+                        </p>
+
+                        <p
+                            id="season-archetype"
+                            class="season-archetype"
+                        >
+                        </p>
+
+                        <p
+                            id="data-confidence"
+                            class="confidence-label"
+                        >
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <p>
+            Independent fan-built statistical project.
+            Not affiliated with or endorsed by the WNBA,
+            NBA, or any WNBA team.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="js/player.js"></script>
+
+
+</body>
+</html>
