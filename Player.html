@@ -10,7 +10,10 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Player | CourtIndex</title>
+    <title>
+        Players | WNBA Archive
+    </title>
+
 
     <link
         rel="stylesheet"
@@ -31,7 +34,7 @@
             href="index.html"
             class="logo"
         >
-            CourtIndex
+            WNBA Archive
         </a>
 
 
@@ -60,37 +63,24 @@
 </header>
 
 
-<main id="player-page">
+<main class="players-page">
 
 
-    <section class="player-profile-header">
+    <section class="page-intro">
 
         <div class="container">
 
-            <a
-                href="players.html"
-                class="back-link"
-            >
-                ← Players
-            </a>
-
-
-            <p
-                id="player-career-label"
-                class="eyebrow"
-            >
+            <p class="eyebrow">
+                Player Archive
             </p>
 
-
-            <h1 id="player-name">
-                Loading player...
+            <h1>
+                Explore Players
             </h1>
 
-
-            <p
-                id="player-career-summary"
-                class="player-profile-summary"
-            >
+            <p>
+                Search WNBA players across the
+                2005–2025 archive.
             </p>
 
         </div>
@@ -98,140 +88,34 @@
     </section>
 
 
-    <section class="season-section">
+    <section class="player-search-section">
 
         <div class="container">
 
+            <div class="search-wrapper">
 
-            <div class="season-controls">
-
-                <div>
-
-                    <label for="season-select">
-                        Season
-                    </label>
-
-
-                    <select id="season-select">
-                    </select>
-
-                </div>
+                <input
+                    id="player-search"
+                    type="search"
+                    placeholder="Search players..."
+                    autocomplete="off"
+                >
 
             </div>
+
+
+            <p
+                id="player-count"
+                class="player-count"
+            >
+            </p>
 
 
             <div
-                id="season-meta"
-                class="season-meta"
+                id="player-list"
+                class="player-grid"
             >
             </div>
-
-
-            <section class="profile-block">
-
-                <div class="block-heading">
-
-                    <p class="eyebrow">
-                        Traditional
-                    </p>
-
-                    <h2>
-                        Season Performance
-                    </h2>
-
-                </div>
-
-
-                <div
-                    id="traditional-stats"
-                    class="stat-grid"
-                >
-                </div>
-
-            </section>
-
-
-            <section class="profile-block">
-
-                <div class="block-heading">
-
-                    <p class="eyebrow">
-                        Efficiency
-                    </p>
-
-                    <h2>
-                        Advanced View
-                    </h2>
-
-                </div>
-
-
-                <div
-                    id="advanced-stats"
-                    class="stat-grid"
-                >
-                </div>
-
-            </section>
-
-
-            <section class="profile-block">
-
-                <div class="block-heading">
-
-                    <p class="eyebrow">
-                        Custom Ratings
-                    </p>
-
-                    <h2>
-                        Season Profile
-                    </h2>
-
-                </div>
-
-
-                <div class="ratings-layout">
-
-
-                    <div
-                        id="rating-list"
-                        class="rating-list"
-                    >
-                    </div>
-
-
-                    <div class="overall-card">
-
-                        <p class="overall-label">
-                            Overall
-                        </p>
-
-                        <p
-                            id="overall-score"
-                            class="overall-score"
-                        >
-                            —
-                        </p>
-
-                        <p
-                            id="season-archetype"
-                            class="season-archetype"
-                        >
-                        </p>
-
-                        <p
-                            id="data-confidence"
-                            class="confidence-label"
-                        >
-                        </p>
-
-                    </div>
-
-
-                </div>
-
-            </section>
-
 
         </div>
 
@@ -241,22 +125,7 @@
 </main>
 
 
-<footer class="site-footer">
-
-    <div class="container">
-
-        <p>
-            Independent fan-built statistical project.
-            Not affiliated with or endorsed by the WNBA,
-            NBA, or any WNBA team.
-        </p>
-
-    </div>
-
-</footer>
-
-
-<script src="js/player.js"></script>
+<script src="js/players.js"></script>
 
 
 </body>
