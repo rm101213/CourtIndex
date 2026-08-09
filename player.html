@@ -10,11 +10,13 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Player | CourtIndex</title>
+    <title>
+        Player | CourtIndex
+    </title>
 
     <link
         rel="stylesheet"
-        href="css/styles.css"
+        href="./css/styles.css"
     >
 
 </head>
@@ -23,262 +25,387 @@
 <body>
 
 
-<header class="site-header">
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
-    <div class="container nav-container">
+    <header class="site-header">
 
-        <a
-            href="index.html"
-            class="logo"
-        >
-            CourtIndex
-        </a>
+        <div class="container nav-container">
 
-
-        <nav class="main-nav">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="players.html">
-                Players
-            </a>
-
-            <a href="#">
-                Compare
-            </a>
-
-            <a href="#">
-                Archive
-            </a>
-
-        </nav>
-
-    </div>
-
-</header>
-
-
-<main id="player-page">
-
-<section class="player-profile-header">
-
-    <div class="container">
-
-        <a
-            href="./players.html"
-            class="back-link"
-        >
-            ← Players
-        </a>
-
-
-        <div class="profile-hero-grid">
-
-            <div>
-
-                <p class="eyebrow">
-                    Player Profile
-                </p>
-
-                <h1 id="player-name">
-                    Loading player...
-                </h1>
-
-                <p
-                    id="player-career-summary"
-                    class="player-profile-summary"
-                >
-                </p>
-
-            </div>
-
-
-            <div class="season-picker">
-
-                <label for="season-select">
-                    Season
-                </label>
-
-                <select id="season-select">
-                </select>
-
-            </div>
-
-        </div>
-
-
-        <div
-            id="season-meta"
-            class="season-meta"
-        >
-        </div>
-
-    </div>
-
-</section>
-
-    <section class="season-section">
-
-        <div class="container">
-
-
-            <div class="season-controls">
-
-                <div>
-
-                    <label for="season-select">
-                        Season
-                    </label>
-
-
-                    <select id="season-select">
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <div
-                id="season-meta"
-                class="season-meta"
+            <a
+                href="./index.html"
+                class="logo"
             >
+                CourtIndex
+            </a>
+
+
+            <nav class="main-nav">
+
+                <a href="./index.html">
+                    Home
+                </a>
+
+                <a href="./players.html">
+                    Players
+                </a>
+
+                <a href="#">
+                    Compare
+                </a>
+
+                <a href="#">
+                    Archive
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PLAYER PAGE
+         ===================================================== -->
+
+    <main id="player-page">
+
+
+        <!-- =================================================
+             PLAYER HEADER
+             ================================================= -->
+
+        <section class="player-profile-header">
+
+            <div class="container">
+
+                <a
+                    href="./players.html"
+                    class="back-link"
+                >
+                    ← Players
+                </a>
+
+
+                <div class="profile-hero-grid">
+
+
+                    <div class="profile-identity">
+
+                        <p class="eyebrow">
+                            Player Profile
+                        </p>
+
+
+                        <h1 id="player-name">
+                            Loading player...
+                        </h1>
+
+
+                        <p
+                            id="player-career-summary"
+                            class="player-profile-summary"
+                        >
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- Season Selector -->
+
+                    <div class="season-picker">
+
+                        <label for="season-select">
+                            Season
+                        </label>
+
+
+                        <select id="season-select">
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- Team / Games -->
+
+                <div
+                    id="season-meta"
+                    class="season-meta"
+                >
+                </div>
+
             </div>
 
-
-            <section class="profile-block">
-
-                <div class="block-heading">
-
-                    <p class="eyebrow">
-                        Traditional
-                    </p>
-
-                    <h2>
-                        Season Performance
-                    </h2>
-
-                </div>
+        </section>
 
 
-                <div
-                    id="traditional-stats"
-                    class="stat-grid"
-                >
-                </div>
 
-            </section>
+        <!-- =================================================
+             SEASON CONTENT
+             ================================================= -->
 
+        <section class="season-section">
 
-            <section class="profile-block">
-
-                <div class="block-heading">
-
-                    <p class="eyebrow">
-                        Efficiency
-                    </p>
-
-                    <h2>
-                        Advanced View
-                    </h2>
-
-                </div>
+            <div class="container">
 
 
-                <div
-                    id="advanced-stats"
-                    class="stat-grid"
-                >
-                </div>
+                <!-- =========================================
+                     STATISTICS
+                     ========================================= -->
 
-            </section>
+                <section class="profile-block compact-profile-block">
 
 
-            <section class="profile-block">
-
-                <div class="block-heading">
-
-                    <p class="eyebrow">
-                        Custom Ratings
-                    </p>
-
-                    <h2>
-                        Season Profile
-                    </h2>
-
-                </div>
+                    <div class="block-heading-row">
 
 
-                <div class="ratings-layout">
+                        <div>
 
+                            <p class="eyebrow">
+                                Season Statistics
+                            </p>
+
+                            <h2>
+                                Performance
+                            </h2>
+
+                        </div>
+
+
+
+                        <!-- Traditional / Advanced Toggle -->
+
+                        <div class="stat-tabs">
+
+                            <button
+                                class="stat-tab active"
+                                data-tab="traditional"
+                                type="button"
+                            >
+                                Traditional
+                            </button>
+
+
+                            <button
+                                class="stat-tab"
+                                data-tab="advanced"
+                                type="button"
+                            >
+                                Advanced
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Traditional Stats -->
 
                     <div
-                        id="rating-list"
-                        class="rating-list"
+                        id="traditional-stats"
+                        class="stat-grid stats-panel active"
                     >
                     </div>
 
 
-                    <div class="overall-card">
 
-                        <p class="overall-label">
-                            Overall
+                    <!-- Advanced Stats -->
+
+                    <div
+                        id="advanced-stats"
+                        class="stat-grid stats-panel"
+                    >
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- =========================================
+                     CUSTOM RATINGS
+                     ========================================= -->
+
+                <section class="profile-block">
+
+
+                    <div class="block-heading">
+
+                        <p class="eyebrow">
+                            Custom Ratings
                         </p>
 
-                        <p
-                            id="overall-score"
-                            class="overall-score"
-                        >
-                            —
-                        </p>
-
-                        <p
-                            id="season-archetype"
-                            class="season-archetype"
-                        >
-                        </p>
-
-                        <p
-                            id="data-confidence"
-                            class="confidence-label"
-                        >
-                        </p>
+                        <h2>
+                            Season Profile
+                        </h2>
 
                     </div>
 
 
-                </div>
 
-            </section>
+                    <div class="ratings-layout">
 
+
+                        <!-- Seven Rating Bars -->
+
+                        <div
+                            id="rating-list"
+                            class="rating-list"
+                        >
+                        </div>
+
+
+
+                        <!-- Overall Rating -->
+
+                        <div class="overall-card">
+
+                            <p class="overall-label">
+                                Overall
+                            </p>
+
+
+                            <p
+                                id="overall-score"
+                                class="overall-score"
+                            >
+                                —
+                            </p>
+
+
+                            <p
+                                id="season-archetype"
+                                class="season-archetype"
+                            >
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         DATA QUALITY
+                         ===================================== -->
+
+                    <div class="data-quality-card">
+
+
+                        <div>
+
+                            <p class="data-quality-label">
+                                Data Quality
+                            </p>
+
+
+                            <p
+                                id="data-confidence"
+                                class="data-quality-value"
+                            >
+                                —
+                            </p>
+
+                        </div>
+
+
+
+                        <button
+                            id="data-quality-info"
+                            class="info-button"
+                            type="button"
+                            aria-expanded="false"
+                        >
+                            What does this mean?
+                        </button>
+
+
+
+                        <div
+                            id="data-quality-explanation"
+                            class="data-quality-explanation"
+                            hidden
+                        >
+
+                            <p>
+                                Data Quality reflects the completeness
+                                and sample size of the season data used
+                                to calculate the statistics and ratings
+                                shown on this page.
+                            </p>
+
+
+                            <p>
+                                It is not a prediction and it does not
+                                mean there is a particular level of
+                                certainty that the player's Overall
+                                rating is correct.
+                            </p>
+
+
+                            <p>
+                                Higher data quality generally means the
+                                player has a stronger sample of games,
+                                minutes and available statistical fields.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <p>
+                Independent fan-built statistical project.
+                Not affiliated with or endorsed by the WNBA,
+                NBA, or any WNBA team.
+            </p>
 
         </div>
 
-    </section>
+    </footer>
 
 
-</main>
 
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
 
-<footer class="site-footer">
-
-    <div class="container">
-
-        <p>
-            Independent fan-built statistical project.
-            Not affiliated with or endorsed by the WNBA,
-            NBA, or any WNBA team.
-        </p>
-
-    </div>
-
-</footer>
-
-
-<script src="js/player.js"></script>
+    <script src="./js/player.js"></script>
 
 
 </body>
+
 </html>
