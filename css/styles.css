@@ -1381,3 +1381,412 @@ img {
     }
 
 }
+/* =========================================================
+   COMPACT PLAYER PROFILE
+   ========================================================= */
+
+.profile-hero-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+    align-items:
+        end;
+
+    gap:
+        40px;
+
+}
+
+
+.player-profile-header {
+
+    padding:
+        48px 0 24px;
+
+}
+
+
+.player-profile-header h1 {
+
+    font-size:
+        clamp(
+            3rem,
+            6vw,
+            5.5rem
+        );
+
+}
+
+
+.season-picker {
+
+    min-width:
+        180px;
+
+}
+
+
+.season-picker label {
+
+    display:
+        block;
+
+    margin-bottom:
+        8px;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        0.75rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.08em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.season-meta {
+
+    margin:
+        24px 0 0;
+
+}
+
+
+/* =========================================================
+   STAT TABS
+   ========================================================= */
+
+.block-heading-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        end;
+
+    gap:
+        24px;
+
+    margin-bottom:
+        24px;
+
+}
+
+
+.stat-tabs {
+
+    display:
+        flex;
+
+    padding:
+        4px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        10px;
+
+    background:
+        var(--surface);
+
+}
+
+
+.stat-tab {
+
+    padding:
+        10px 16px;
+
+    border:
+        0;
+
+    border-radius:
+        7px;
+
+    background:
+        transparent;
+
+    color:
+        var(--text-muted);
+
+    cursor:
+        pointer;
+
+    font:
+        inherit;
+
+    font-weight:
+        700;
+
+}
+
+
+.stat-tab.active {
+
+    background:
+        var(--surface-light);
+
+    color:
+        var(--text);
+
+}
+
+
+.stats-panel {
+
+    display:
+        none;
+
+}
+
+
+.stats-panel.active {
+
+    display:
+        grid;
+
+}
+
+
+.compact-profile-block {
+
+    padding:
+        32px 0;
+
+}
+
+
+/* =========================================================
+   DATA QUALITY
+   ========================================================= */
+
+.data-quality-card {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        20px;
+
+    margin-top:
+        16px;
+
+    padding:
+        18px 20px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        12px;
+
+    background:
+        var(--surface);
+
+}
+
+
+.data-quality-label {
+
+    margin:
+        0;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.08em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.data-quality-value {
+
+    margin:
+        4px 0 0;
+
+    font-size:
+        1.2rem;
+
+    font-weight:
+        800;
+
+}
+
+
+.info-button {
+
+    border:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        var(--accent);
+
+    cursor:
+        pointer;
+
+    font:
+        inherit;
+
+    font-weight:
+        700;
+
+}
+
+
+.data-quality-explanation {
+
+    position:
+        absolute;
+
+    right:
+        20px;
+
+    top:
+        calc(100% + 8px);
+
+    z-index:
+        50;
+
+    width:
+        min(
+            420px,
+            calc(100vw - 40px)
+        );
+
+    padding:
+        18px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        12px;
+
+    background:
+        var(--surface-light);
+
+    box-shadow:
+        0 16px 40px
+        rgba(0, 0, 0, 0.35);
+
+    color:
+        var(--text-muted);
+
+}
+
+
+.data-quality-explanation p {
+
+    margin:
+        0;
+
+}
+
+
+.data-quality-explanation p + p {
+
+    margin-top:
+        12px;
+
+}
+
+
+@media (
+    max-width: 700px
+) {
+
+    .profile-hero-grid {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            22px;
+
+    }
+
+
+    .season-picker {
+
+        width:
+            100%;
+
+    }
+
+
+    .season-picker select {
+
+        width:
+            100%;
+
+    }
+
+
+    .block-heading-row {
+
+        align-items:
+            stretch;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .stat-tabs {
+
+        align-self:
+            flex-start;
+
+    }
+
+
+    .data-quality-card {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
+
+}
