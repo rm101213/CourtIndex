@@ -62,41 +62,62 @@
 
 <main id="player-page">
 
+<section class="player-profile-header">
 
-    <section class="player-profile-header">
+    <div class="container">
 
-        <div class="container">
-
-            <a
-                href="players.html"
-                class="back-link"
-            >
-                ← Players
-            </a>
-
-
-            <p
-                id="player-career-label"
-                class="eyebrow"
-            >
-            </p>
+        <a
+            href="./players.html"
+            class="back-link"
+        >
+            ← Players
+        </a>
 
 
-            <h1 id="player-name">
-                Loading player...
-            </h1>
+        <div class="profile-hero-grid">
+
+            <div>
+
+                <p class="eyebrow">
+                    Player Profile
+                </p>
+
+                <h1 id="player-name">
+                    Loading player...
+                </h1>
+
+                <p
+                    id="player-career-summary"
+                    class="player-profile-summary"
+                >
+                </p>
+
+            </div>
 
 
-            <p
-                id="player-career-summary"
-                class="player-profile-summary"
-            >
-            </p>
+            <div class="season-picker">
+
+                <label for="season-select">
+                    Season
+                </label>
+
+                <select id="season-select">
+                </select>
+
+            </div>
 
         </div>
 
-    </section>
 
+        <div
+            id="season-meta"
+            class="season-meta"
+        >
+        </div>
+
+    </div>
+
+</section>
 
     <section class="season-section">
 
