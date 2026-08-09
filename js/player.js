@@ -647,4 +647,122 @@ seasonSelect.addEventListener(
 
 loadPlayer();
 
+// ----------------------------------------------------------
+// DATA QUALITY EXPLANATION
+// ----------------------------------------------------------
 
+const dataQualityButton =
+    document.getElementById(
+        "data-quality-info"
+    );
+
+const dataQualityExplanation =
+    document.getElementById(
+        "data-quality-explanation"
+    );
+
+
+if (
+    dataQualityButton
+    &&
+    dataQualityExplanation
+) {
+
+    dataQualityButton.addEventListener(
+        "click",
+        () => {
+
+            const isHidden =
+                dataQualityExplanation.hidden;
+
+
+            dataQualityExplanation.hidden =
+                !isHidden;
+
+
+            dataQualityButton.setAttribute(
+                "aria-expanded",
+                String(
+                    isHidden
+                )
+            );
+
+
+            dataQualityButton.textContent =
+                isHidden
+                ?
+                "Hide explanation"
+                :
+                "What does this mean?";
+
+        }
+    );
+
+}
+// ----------------------------------------------------------
+// STAT TABS
+// ----------------------------------------------------------
+
+const statTabs =
+    document.querySelectorAll(
+        ".stat-tab"
+    );
+
+const statPanels = {
+    traditional:
+        document.getElementById(
+            "traditional-stats"
+        ),
+
+    advanced:
+        document.getElementById(
+            "advanced-stats"
+        )
+};
+
+
+statTabs.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                statTabs.forEach(
+                    tab =>
+                        tab.classList.remove(
+                            "active"
+                        )
+                );
+
+
+                Object.values(
+                    statPanels
+                ).forEach(
+                    panel =>
+                        panel.classList.remove(
+                            "active"
+                        )
+                );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                const selectedTab =
+                    button.dataset.tab;
+
+
+                statPanels[
+                    selectedTab
+                ].classList.add(
+                    "active"
+                );
+
+            }
+        );
+
+    }
+);
