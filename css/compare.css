@@ -1,0 +1,872 @@
+/* =========================================================
+   COURTINDEX
+   COMPARE PAGE
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.compare-page {
+
+    min-height:
+        100vh;
+
+}
+
+
+.compare-hero {
+
+    padding:
+        70px 0 36px;
+
+}
+
+
+.compare-hero h1 {
+
+    margin:
+        0;
+
+    font-size:
+        clamp(
+            3rem,
+            7vw,
+            5.8rem
+        );
+
+    line-height:
+        0.95;
+
+    letter-spacing:
+        -0.055em;
+
+}
+
+
+.compare-intro {
+
+    max-width:
+        720px;
+
+    margin:
+        24px 0 0;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        1.08rem;
+
+}
+
+
+/* =========================================================
+   SELECTORS
+   ========================================================= */
+
+.compare-builder {
+
+    padding:
+        12px 0 48px;
+
+}
+
+
+.comparison-selectors {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap:
+        14px;
+
+}
+
+
+.comparison-selector {
+
+    position:
+        relative;
+
+    padding:
+        20px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        16px;
+
+    background:
+        var(--surface);
+
+}
+
+
+.selector-number {
+
+    margin:
+        0 0 16px;
+
+    color:
+        var(--accent);
+
+    font-size:
+        0.75rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.1em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.selector-fields {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(
+            0,
+            2fr
+        )
+        minmax(
+            120px,
+            1fr
+        );
+
+    gap:
+        10px;
+
+}
+
+
+.selector-field label {
+
+    display:
+        block;
+
+    margin-bottom:
+        7px;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        0.73rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.07em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.selector-field select {
+
+    width:
+        100%;
+
+    height:
+        50px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        10px;
+
+    background:
+        var(--surface-light);
+
+    color:
+        var(--text);
+
+    font:
+        inherit;
+
+}
+
+
+.remove-player-button {
+
+    position:
+        absolute;
+
+    top:
+        12px;
+
+    right:
+        12px;
+
+    border:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        var(--text-muted);
+
+    cursor:
+        pointer;
+
+    font-size:
+        1.2rem;
+
+}
+
+
+.remove-player-button:hover {
+
+    color:
+        var(--text);
+
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.comparison-actions {
+
+    display:
+        flex;
+
+    gap:
+        10px;
+
+    margin-top:
+        16px;
+
+}
+
+
+.compare-button {
+
+    min-height:
+        44px;
+
+    padding:
+        0 16px;
+
+    border-radius:
+        9px;
+
+    cursor:
+        pointer;
+
+    font:
+        inherit;
+
+    font-weight:
+        700;
+
+}
+
+
+.secondary-compare-button {
+
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--surface);
+
+    color:
+        var(--text);
+
+}
+
+
+.secondary-compare-button:hover {
+
+    border-color:
+        var(--accent);
+
+}
+
+
+.ghost-compare-button {
+
+    border:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        var(--text-muted);
+
+}
+
+
+.ghost-compare-button:hover {
+
+    color:
+        var(--text);
+
+}
+
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+.comparison-results {
+
+    padding:
+        20px 0 100px;
+
+    border-top:
+        1px solid var(--border);
+
+}
+
+
+.comparison-toolbar {
+
+    display:
+        flex;
+
+    align-items:
+        end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        24px;
+
+    margin-bottom:
+        28px;
+
+}
+
+
+.comparison-toolbar h2 {
+
+    margin:
+        0;
+
+    font-size:
+        clamp(
+            2rem,
+            4vw,
+            3rem
+        );
+
+    letter-spacing:
+        -0.04em;
+
+}
+
+
+.comparison-mode-toggle {
+
+    display:
+        flex;
+
+    padding:
+        4px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        10px;
+
+    background:
+        var(--surface);
+
+}
+
+
+.comparison-mode-button {
+
+    padding:
+        10px 16px;
+
+    border:
+        0;
+
+    border-radius:
+        7px;
+
+    background:
+        transparent;
+
+    color:
+        var(--text-muted);
+
+    cursor:
+        pointer;
+
+    font:
+        inherit;
+
+    font-weight:
+        700;
+
+}
+
+
+.comparison-mode-button.active {
+
+    background:
+        var(--surface-light);
+
+    color:
+        var(--text);
+
+}
+
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
+.comparison-panel {
+
+    display:
+        none;
+
+}
+
+
+.comparison-panel.active {
+
+    display:
+        block;
+
+}
+
+
+/* =========================================================
+   COMPARISON TABLE
+   ========================================================= */
+
+.comparison-table-wrapper {
+
+    width:
+        100%;
+
+    overflow-x:
+        auto;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        14px;
+
+    background:
+        var(--surface);
+
+}
+
+
+.comparison-table {
+
+    width:
+        100%;
+
+    border-collapse:
+        collapse;
+
+}
+
+
+.comparison-table th,
+.comparison-table td {
+
+    min-width:
+        150px;
+
+    padding:
+        17px 18px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    text-align:
+        right;
+
+}
+
+
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+
+    position:
+        sticky;
+
+    left:
+        0;
+
+    z-index:
+        2;
+
+    min-width:
+        180px;
+
+    background:
+        var(--surface);
+
+    text-align:
+        left;
+
+}
+
+
+.comparison-table thead th {
+
+    color:
+        var(--text);
+
+    font-size:
+        0.9rem;
+
+}
+
+
+.comparison-table tbody td:first-child {
+
+    color:
+        var(--text-muted);
+
+    font-weight:
+        700;
+
+}
+
+
+.comparison-table tr:last-child td {
+
+    border-bottom:
+        0;
+
+}
+
+
+/* =========================================================
+   CUSTOM COMPARISON
+   ========================================================= */
+
+.custom-comparison-layout {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(
+            0,
+            2fr
+        )
+        minmax(
+            260px,
+            1fr
+        );
+
+    gap:
+        16px;
+
+    margin-bottom:
+        16px;
+
+}
+
+
+.radar-card {
+
+    padding:
+        24px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        16px;
+
+    background:
+        var(--surface);
+
+}
+
+
+.radar-heading h3 {
+
+    margin:
+        0;
+
+    font-size:
+        1.6rem;
+
+}
+
+
+.radar-chart-wrapper {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    height:
+        520px;
+
+    margin-top:
+        10px;
+
+}
+
+
+.overall-comparison-card {
+
+    padding:
+        24px;
+
+    border-radius:
+        16px;
+
+    background:
+        var(--accent);
+
+    color:
+        #111;
+
+}
+
+
+.overall-comparison-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        14px;
+
+    margin-top:
+        18px;
+
+}
+
+
+.overall-player {
+
+    padding:
+        14px 0;
+
+    border-bottom:
+        1px solid
+        rgba(
+            0,
+            0,
+            0,
+            0.2
+        );
+
+}
+
+
+.overall-player:last-child {
+
+    border-bottom:
+        0;
+
+}
+
+
+.overall-player-name {
+
+    margin:
+        0;
+
+    font-weight:
+        800;
+
+}
+
+
+.overall-player-season {
+
+    margin:
+        3px 0 0;
+
+    opacity:
+        0.7;
+
+    font-size:
+        0.85rem;
+
+}
+
+
+.overall-player-score {
+
+    margin:
+        8px 0 0;
+
+    font-size:
+        2.7rem;
+
+    font-weight:
+        900;
+
+    line-height:
+        1;
+
+    letter-spacing:
+        -0.05em;
+
+}
+
+
+.overall-player-archetype {
+
+    margin:
+        5px 0 0;
+
+    font-weight:
+        700;
+
+}
+
+
+.custom-rating-table {
+
+    margin-top:
+        16px;
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.comparison-empty {
+
+    padding:
+        36px;
+
+    color:
+        var(--text-muted);
+
+    text-align:
+        center;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (
+    max-width: 900px
+) {
+
+    .comparison-selectors {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .custom-comparison-layout {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .radar-chart-wrapper {
+
+        height:
+            430px;
+
+    }
+
+}
+
+
+@media (
+    max-width: 650px
+) {
+
+    .comparison-toolbar {
+
+        align-items:
+            stretch;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .selector-fields {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .comparison-mode-toggle {
+
+        width:
+            100%;
+
+    }
+
+
+    .comparison-mode-button {
+
+        flex:
+            1;
+
+    }
+
+
+    .radar-chart-wrapper {
+
+        height:
+            350px;
+
+    }
+
+}
