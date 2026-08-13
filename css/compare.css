@@ -4,202 +4,158 @@
    ========================================================= */
 
 
-/* =========================================================
-   PAGE
-   ========================================================= */
+/* Let the header scroll away instead of obstructing content */
 
-.compare-page {
-
-    min-height:
-        100vh;
-
+.compare-body .site-header {
+    position: relative;
+    top: auto;
 }
 
 
+/* =========================================================
+   HERO
+   ========================================================= */
+
 .compare-hero {
-
-    padding:
-        70px 0 36px;
-
+    padding: 58px 0 28px;
 }
 
 
 .compare-hero h1 {
-
-    margin:
-        0;
+    margin: 0;
 
     font-size:
         clamp(
             3rem,
             7vw,
-            5.8rem
+            5.7rem
         );
 
-    line-height:
-        0.95;
+    line-height: 0.95;
 
     letter-spacing:
         -0.055em;
-
 }
 
 
 .compare-intro {
+    max-width: 700px;
 
-    max-width:
-        720px;
-
-    margin:
-        24px 0 0;
+    margin-top: 22px;
 
     color:
         var(--text-muted);
-
-    font-size:
-        1.08rem;
-
 }
 
 
 /* =========================================================
-   SELECTORS
+   PLAYER SELECTORS
    ========================================================= */
 
 .compare-builder {
-
     padding:
-        12px 0 48px;
-
+        12px 0 40px;
 }
 
 
 .comparison-selectors {
-
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         repeat(
             2,
-            minmax(
-                0,
-                1fr
-            )
+            minmax(0, 1fr)
         );
 
-    gap:
-        14px;
-
+    gap: 14px;
 }
 
 
 .comparison-selector {
+    position: relative;
 
-    position:
-        relative;
-
-    padding:
-        20px;
+    padding: 20px;
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        16px;
+    border-radius: 16px;
 
     background:
         var(--surface);
-
 }
 
 
 .selector-number {
-
     margin:
-        0 0 16px;
+        0 0 14px;
 
     color:
         var(--accent);
 
-    font-size:
-        0.75rem;
+    font-size: 0.75rem;
 
-    font-weight:
-        800;
+    font-weight: 800;
 
-    letter-spacing:
-        0.1em;
+    letter-spacing: 0.1em;
 
-    text-transform:
-        uppercase;
-
+    text-transform: uppercase;
 }
 
 
 .selector-fields {
-
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
-        minmax(
-            0,
-            2fr
-        )
-        minmax(
-            120px,
-            1fr
-        );
+        minmax(0, 2fr)
+        minmax(120px, 1fr);
 
-    gap:
-        10px;
+    gap: 10px;
+}
 
+
+.selector-field {
+    position: relative;
 }
 
 
 .selector-field label {
+    display: block;
 
-    display:
-        block;
-
-    margin-bottom:
-        7px;
+    margin-bottom: 7px;
 
     color:
         var(--text-muted);
 
-    font-size:
-        0.73rem;
+    font-size: 0.73rem;
 
-    font-weight:
-        800;
+    font-weight: 800;
 
-    letter-spacing:
-        0.07em;
+    letter-spacing: 0.07em;
 
-    text-transform:
-        uppercase;
-
+    text-transform: uppercase;
 }
 
 
+/* =========================================================
+   SEARCH INPUT
+   ========================================================= */
+
+.player-search-input,
 .selector-field select {
+    width: 100%;
 
-    width:
-        100%;
-
-    height:
-        50px;
+    height: 50px;
 
     padding:
-        0 12px;
+        0 13px;
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        10px;
+    border-radius: 10px;
+
+    outline: none;
 
     background:
         var(--surface-light);
@@ -207,46 +163,113 @@
     color:
         var(--text);
 
-    font:
-        inherit;
-
+    font: inherit;
 }
 
 
-.remove-player-button {
+.player-search-input:focus {
+    border-color:
+        var(--accent);
+}
 
-    position:
-        absolute;
+
+.player-suggestions {
+    position: absolute;
 
     top:
-        12px;
+        calc(100% + 6px);
 
-    right:
-        12px;
+    left: 0;
+
+    right: 0;
+
+    z-index: 100;
+
+    max-height: 280px;
+
+    overflow-y: auto;
 
     border:
-        0;
+        1px solid var(--border);
+
+    border-radius: 10px;
 
     background:
-        transparent;
+        var(--surface-light);
 
-    color:
-        var(--text-muted);
-
-    cursor:
-        pointer;
-
-    font-size:
-        1.2rem;
-
+    box-shadow:
+        0 18px 42px
+        rgba(0, 0, 0, 0.45);
 }
 
 
-.remove-player-button:hover {
+.player-suggestion {
+    width: 100%;
+
+    padding:
+        11px 13px;
+
+    border: 0;
+
+    border-bottom:
+        1px solid var(--border);
+
+    background: transparent;
 
     color:
         var(--text);
 
+    cursor: pointer;
+
+    text-align: left;
+
+    font: inherit;
+}
+
+
+.player-suggestion:last-child {
+    border-bottom: 0;
+}
+
+
+.player-suggestion:hover {
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.05
+        );
+}
+
+
+.player-suggestion small {
+    display: block;
+
+    margin-top: 2px;
+
+    color:
+        var(--text-muted);
+}
+
+
+.remove-player-button {
+    position: absolute;
+
+    top: 12px;
+
+    right: 12px;
+
+    border: 0;
+
+    background: transparent;
+
+    color:
+        var(--text-muted);
+
+    cursor: pointer;
+
+    font-size: 1.3rem;
 }
 
 
@@ -255,44 +278,31 @@
    ========================================================= */
 
 .comparison-actions {
+    display: flex;
 
-    display:
-        flex;
+    gap: 10px;
 
-    gap:
-        10px;
-
-    margin-top:
-        16px;
-
+    margin-top: 14px;
 }
 
 
 .compare-button {
-
-    min-height:
-        44px;
+    min-height: 44px;
 
     padding:
         0 16px;
 
-    border-radius:
-        9px;
+    border-radius: 9px;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 
-    font:
-        inherit;
+    font: inherit;
 
-    font-weight:
-        700;
-
+    font-weight: 700;
 }
 
 
 .secondary-compare-button {
-
     border:
         1px solid var(--border);
 
@@ -301,37 +311,17 @@
 
     color:
         var(--text);
-
-}
-
-
-.secondary-compare-button:hover {
-
-    border-color:
-        var(--accent);
-
 }
 
 
 .ghost-compare-button {
-
-    border:
-        0;
+    border: 0;
 
     background:
         transparent;
 
     color:
         var(--text-muted);
-
-}
-
-
-.ghost-compare-button:hover {
-
-    color:
-        var(--text);
-
 }
 
 
@@ -340,40 +330,30 @@
    ========================================================= */
 
 .comparison-results {
-
     padding:
-        20px 0 100px;
+        26px 0 100px;
 
     border-top:
         1px solid var(--border);
-
 }
 
 
 .comparison-toolbar {
+    display: flex;
 
-    display:
-        flex;
-
-    align-items:
-        end;
+    align-items: end;
 
     justify-content:
         space-between;
 
-    gap:
-        24px;
+    gap: 20px;
 
-    margin-bottom:
-        28px;
-
+    margin-bottom: 24px;
 }
 
 
 .comparison-toolbar h2 {
-
-    margin:
-        0;
+    margin: 0;
 
     font-size:
         clamp(
@@ -381,309 +361,154 @@
             4vw,
             3rem
         );
-
-    letter-spacing:
-        -0.04em;
-
 }
 
 
 .comparison-mode-toggle {
+    display: flex;
 
-    display:
-        flex;
-
-    padding:
-        4px;
+    padding: 4px;
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        10px;
+    border-radius: 10px;
 
     background:
         var(--surface);
-
 }
 
 
 .comparison-mode-button {
-
     padding:
         10px 16px;
 
-    border:
-        0;
+    border: 0;
 
-    border-radius:
-        7px;
+    border-radius: 7px;
 
-    background:
-        transparent;
+    background: transparent;
 
     color:
         var(--text-muted);
 
-    cursor:
-        pointer;
+    cursor: pointer;
 
     font:
         inherit;
 
-    font-weight:
-        700;
-
+    font-weight: 700;
 }
 
 
 .comparison-mode-button.active {
-
     background:
         var(--surface-light);
 
     color:
         var(--text);
-
 }
 
 
-/* =========================================================
-   PANELS
-   ========================================================= */
-
 .comparison-panel {
-
-    display:
-        none;
-
+    display: none;
 }
 
 
 .comparison-panel.active {
-
-    display:
-        block;
-
+    display: block;
 }
 
 
 /* =========================================================
-   COMPARISON TABLE
+   RADAR AREA
    ========================================================= */
 
-.comparison-table-wrapper {
-
-    width:
-        100%;
-
-    overflow-x:
-        auto;
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        14px;
-
-    background:
-        var(--surface);
-
-}
-
-
-.comparison-table {
-
-    width:
-        100%;
-
-    border-collapse:
-        collapse;
-
-}
-
-
-.comparison-table th,
-.comparison-table td {
-
-    min-width:
-        150px;
-
-    padding:
-        17px 18px;
-
-    border-bottom:
-        1px solid var(--border);
-
-    text-align:
-        right;
-
-}
-
-
-.comparison-table th:first-child,
-.comparison-table td:first-child {
-
-    position:
-        sticky;
-
-    left:
-        0;
-
-    z-index:
-        2;
-
-    min-width:
-        180px;
-
-    background:
-        var(--surface);
-
-    text-align:
-        left;
-
-}
-
-
-.comparison-table thead th {
-
-    color:
-        var(--text);
-
-    font-size:
-        0.9rem;
-
-}
-
-
-.comparison-table tbody td:first-child {
-
-    color:
-        var(--text-muted);
-
-    font-weight:
-        700;
-
-}
-
-
-.comparison-table tr:last-child td {
-
-    border-bottom:
-        0;
-
-}
-
-
-/* =========================================================
-   CUSTOM COMPARISON
-   ========================================================= */
-
-.custom-comparison-layout {
-
-    display:
-        grid;
+.compare-dashboard {
+    display: grid;
 
     grid-template-columns:
-        minmax(
-            0,
-            2fr
-        )
-        minmax(
-            260px,
-            1fr
-        );
+        minmax(0, 2fr)
+        minmax(270px, 0.85fr);
 
-    gap:
-        16px;
-
-    margin-bottom:
-        16px;
-
+    gap: 16px;
 }
 
 
 .radar-card {
-
-    padding:
-        24px;
+    padding: 22px;
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        16px;
+    border-radius: 16px;
 
     background:
         var(--surface);
+}
 
+
+.radar-heading {
+    display: flex;
+
+    align-items: start;
+
+    justify-content:
+        space-between;
+
+    gap: 20px;
 }
 
 
 .radar-heading h3 {
+    margin: 0;
 
-    margin:
-        0;
+    font-size: 1.5rem;
+}
 
-    font-size:
-        1.6rem;
 
+.chart-note {
+    max-width: 320px;
+
+    margin: 0;
+
+    color:
+        var(--text-muted);
+
+    font-size: 0.82rem;
+
+    text-align: right;
 }
 
 
 .radar-chart-wrapper {
+    position: relative;
 
-    position:
-        relative;
+    height: 470px;
 
-    width:
-        100%;
-
-    height:
-        520px;
-
-    margin-top:
-        10px;
-
+    margin-top: 8px;
 }
 
 
+/* =========================================================
+   SUMMARY CARD
+   ========================================================= */
+
+.comparison-summary-card,
 .overall-comparison-card {
+    padding: 22px;
 
-    padding:
-        24px;
-
-    border-radius:
-        16px;
+    border-radius: 16px;
 
     background:
         var(--accent);
 
-    color:
-        #111;
-
+    color: #111;
 }
 
 
-.overall-comparison-list {
-
-    display:
-        flex;
-
-    flex-direction:
-        column;
-
-    gap:
-        14px;
-
-    margin-top:
-        18px;
-
-}
-
-
+.summary-player,
 .overall-player {
-
     padding:
         14px 0;
 
@@ -693,99 +518,415 @@
             0,
             0,
             0,
-            0.2
+            0.16
         );
-
 }
 
 
+.summary-player:last-child,
 .overall-player:last-child {
-
-    border-bottom:
-        0;
-
+    border-bottom: 0;
 }
 
 
+.summary-name,
 .overall-player-name {
+    margin: 0;
 
-    margin:
-        0;
+    font-size: 1rem;
 
-    font-weight:
-        800;
-
+    font-weight: 800;
 }
 
 
+.team-link {
+    color: inherit;
+
+    text-decoration: underline;
+
+    text-decoration-thickness: 1px;
+
+    text-underline-offset: 3px;
+}
+
+
+.summary-season,
 .overall-player-season {
-
     margin:
-        3px 0 0;
+        4px 0 0;
 
-    opacity:
-        0.7;
+    opacity: 0.72;
 
-    font-size:
-        0.85rem;
+    font-size: 0.86rem;
+}
 
+
+.summary-main-stat {
+    margin:
+        8px 0 0;
+
+    font-size: 2rem;
+
+    font-weight: 900;
 }
 
 
 .overall-player-score {
-
     margin:
         8px 0 0;
 
-    font-size:
-        2.7rem;
+    font-size: 2.8rem;
 
-    font-weight:
-        900;
-
-    line-height:
-        1;
+    font-weight: 900;
 
     letter-spacing:
         -0.05em;
-
 }
 
 
 .overall-player-archetype {
-
     margin:
-        5px 0 0;
+        4px 0 0;
 
-    font-weight:
-        700;
-
-}
-
-
-.custom-rating-table {
-
-    margin-top:
-        16px;
-
+    font-weight: 800;
 }
 
 
 /* =========================================================
-   EMPTY STATE
+   COMPACT METRIC LIST
    ========================================================= */
 
-.comparison-empty {
+.metric-comparison-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 16px;
+}
+
+
+.metric-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(150px, 0.9fr)
+        minmax(0, 2.1fr);
+
+    align-items: center;
+
+    gap: 18px;
 
     padding:
-        36px;
+        15px 18px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 12px;
+
+    background:
+        var(--surface);
+}
+
+
+.metric-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.metric-name {
+    margin: 0;
+
+    font-weight: 800;
+}
+
+
+.learn-more-button {
+    border: 0;
+
+    padding: 0;
+
+    background: transparent;
+
+    color:
+        var(--accent);
+
+    cursor: pointer;
+
+    font:
+        inherit;
+
+    font-size: 0.78rem;
+
+    font-weight: 700;
+}
+
+
+.metric-values {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            var(--compare-count, 2),
+            minmax(0, 1fr)
+        );
+
+    gap: 8px;
+}
+
+
+.metric-player-value {
+    padding:
+        9px 10px;
+
+    border-radius: 8px;
+
+    background:
+        var(--surface-light);
+
+    text-align: center;
+}
+
+
+.metric-player-value strong {
+    display: block;
+
+    font-size: 1.05rem;
+}
+
+
+.metric-player-value span {
+    display: block;
+
+    margin-top: 2px;
+
+    overflow: hidden;
 
     color:
         var(--text-muted);
 
-    text-align:
-        center;
+    font-size: 0.7rem;
 
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ARCHETYPE HELP
+   ========================================================= */
+
+.archetype-help {
+    display: flex;
+
+    align-items: center;
+
+    justify-content:
+        space-between;
+
+    gap: 20px;
+
+    margin-top: 18px;
+
+    padding: 20px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 12px;
+
+    background:
+        var(--surface);
+}
+
+
+.archetype-help h3 {
+    margin: 0;
+}
+
+
+/* =========================================================
+   MODALS
+   ========================================================= */
+
+.info-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 500;
+}
+
+
+.info-modal-backdrop {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            0.7
+        );
+
+    backdrop-filter:
+        blur(4px);
+}
+
+
+.info-modal-card {
+    position: absolute;
+
+    top: 50%;
+
+    left: 50%;
+
+    width:
+        min(
+            680px,
+            calc(100% - 32px)
+        );
+
+    max-height:
+        82vh;
+
+    overflow-y: auto;
+
+    padding: 28px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    background:
+        var(--surface);
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+}
+
+
+.info-modal-card h2 {
+    margin:
+        0 0 12px;
+
+    font-size: 2rem;
+}
+
+
+.modal-close-button {
+    position: absolute;
+
+    top: 14px;
+
+    right: 16px;
+
+    border: 0;
+
+    background: transparent;
+
+    color:
+        var(--text-muted);
+
+    cursor: pointer;
+
+    font-size: 1.7rem;
+}
+
+
+.modal-description {
+    color:
+        var(--text-muted);
+}
+
+
+.metric-detail-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 20px;
+}
+
+
+.metric-detail-item {
+    display: grid;
+
+    grid-template-columns:
+        1fr auto;
+
+    gap: 12px;
+
+    padding:
+        12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 8px;
+
+    background:
+        var(--surface-light);
+}
+
+
+.archetype-guide {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+.archetype-guide-item {
+    padding: 14px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background:
+        var(--surface-light);
+}
+
+
+.archetype-guide-item strong {
+    display: block;
+
+    margin-bottom: 5px;
+}
+
+
+.archetype-guide-item p {
+    margin: 0;
+
+    color:
+        var(--text-muted);
+
+    font-size: 0.85rem;
 }
 
 
@@ -798,26 +939,24 @@
 ) {
 
     .comparison-selectors {
-
         grid-template-columns:
             1fr;
-
     }
 
 
-    .custom-comparison-layout {
-
+    .compare-dashboard {
         grid-template-columns:
             1fr;
-
     }
 
 
     .radar-chart-wrapper {
+        height: 400px;
+    }
 
-        height:
-            430px;
 
+    .chart-note {
+        display: none;
     }
 
 }
@@ -828,45 +967,55 @@
 ) {
 
     .comparison-toolbar {
+        align-items: stretch;
 
-        align-items:
-            stretch;
-
-        flex-direction:
-            column;
-
+        flex-direction: column;
     }
 
 
     .selector-fields {
-
         grid-template-columns:
             1fr;
-
     }
 
 
     .comparison-mode-toggle {
-
-        width:
-            100%;
-
+        width: 100%;
     }
 
 
     .comparison-mode-button {
+        flex: 1;
+    }
 
-        flex:
-            1;
 
+    .metric-row {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .metric-values {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .archetype-help {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .archetype-guide {
+        grid-template-columns:
+            1fr;
     }
 
 
     .radar-chart-wrapper {
-
-        height:
-            350px;
-
+        height: 340px;
     }
 
 }
