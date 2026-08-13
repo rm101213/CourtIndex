@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Team | CourtIndex
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="./css/styles.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./css/team.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+    <div class="container nav-container">
+
+        <a
+            href="./index.html"
+            class="logo"
+        >
+            CourtIndex
+        </a>
+
+
+        <nav class="main-nav">
+
+            <a href="./index.html">
+                Home
+            </a>
+
+            <a href="./players.html">
+                Players
+            </a>
+
+            <a href="./compare.html">
+                Compare
+            </a>
+
+            <a href="#">
+                Archive
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<main class="team-page">
+
+    <section class="team-hero">
+
+        <div class="container">
+
+            <a
+                href="javascript:history.back()"
+                class="back-link"
+            >
+                ← Back
+            </a>
+
+
+            <p class="eyebrow">
+                Team Season
+            </p>
+
+
+            <h1 id="team-name">
+                Loading team...
+            </h1>
+
+
+            <div class="team-season-control">
+
+                <label for="team-season-select">
+                    Season
+                </label>
+
+                <select id="team-season-select">
+                </select>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="team-content">
+
+        <div class="container">
+
+
+            <div
+                id="team-summary"
+                class="team-summary-grid"
+            >
+            </div>
+
+
+            <section class="team-roster-section">
+
+                <div class="section-heading">
+
+                    <p class="eyebrow">
+                        Roster
+                    </p>
+
+                    <h2>
+                        Player Seasons
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="team-roster"
+                    class="team-roster-grid"
+                >
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <p>
+            Independent fan-built statistical project.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="./js/team.js"></script>
+
+
+</body>
+
+</html>
