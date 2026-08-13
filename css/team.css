@@ -1,0 +1,186 @@
+.team-hero {
+    padding:
+        60px 0 34px;
+}
+
+
+.team-hero h1 {
+    margin: 0;
+
+    font-size:
+        clamp(
+            3rem,
+            7vw,
+            5rem
+        );
+
+    letter-spacing:
+        -0.05em;
+}
+
+
+.team-season-control {
+    max-width: 220px;
+
+    margin-top: 28px;
+}
+
+
+.team-season-control label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color:
+        var(--text-muted);
+
+    font-size: 0.75rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+
+.team-season-control select {
+    width: 100%;
+
+    height: 48px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 9px;
+
+    background:
+        var(--surface);
+
+    color:
+        var(--text);
+
+    font: inherit;
+}
+
+
+.team-content {
+    padding:
+        20px 0 100px;
+}
+
+
+.team-summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 10px;
+}
+
+
+.team-summary-card {
+    padding: 20px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 12px;
+
+    background:
+        var(--surface);
+}
+
+
+.team-summary-card strong {
+    display: block;
+
+    font-size: 2rem;
+}
+
+
+.team-summary-card span {
+    color:
+        var(--text-muted);
+}
+
+
+.team-roster-section {
+    margin-top: 56px;
+}
+
+
+.team-roster-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 10px;
+}
+
+
+.team-player-card {
+    padding: 18px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 12px;
+
+    background:
+        var(--surface);
+}
+
+
+.team-player-card:hover {
+    border-color:
+        var(--accent);
+}
+
+
+.team-player-card h3 {
+    margin:
+        0 0 10px;
+}
+
+
+.team-player-stats {
+    display: flex;
+
+    gap: 12px;
+
+    color:
+        var(--text-muted);
+
+    font-size: 0.86rem;
+}
+
+
+@media (
+    max-width: 800px
+) {
+
+    .team-summary-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
+
+    .team-roster-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
