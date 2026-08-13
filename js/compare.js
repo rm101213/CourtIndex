@@ -4,121 +4,97 @@
 // ==========================================================
 
 
-// ==========================================================
-// CONFIG
-// ==========================================================
-
 const MAX_PLAYERS = 4;
-
 const MIN_PLAYERS = 2;
 
 
 const PLAYER_COLOURS = [
 
     {
-        border:
-            "rgb(255, 107, 53)",
-
-        background:
-            "rgba(255, 107, 53, 0.18)"
+        border: "#ff6b35",
+        background: "rgba(255,107,53,0.16)"
     },
 
     {
-        border:
-            "rgb(78, 162, 255)",
-
-        background:
-            "rgba(78, 162, 255, 0.16)"
+        border: "#56a6ff",
+        background: "rgba(86,166,255,0.15)"
     },
 
     {
-        border:
-            "rgb(125, 220, 150)",
-
-        background:
-            "rgba(125, 220, 150, 0.14)"
+        border: "#78d89a",
+        background: "rgba(120,216,154,0.14)"
     },
 
     {
-        border:
-            "rgb(200, 130, 255)",
-
-        background:
-            "rgba(200, 130, 255, 0.14)"
+        border: "#c47cff",
+        background: "rgba(196,124,255,0.14)"
     }
 
 ];
 
 
-// ==========================================================
-// DOM
-// ==========================================================
+
+let allProfiles = [];
+let playerIndex = [];
+let selectors = [];
+
+let customRadarChart = null;
+let traditionalRadarChart = null;
+
+let modelMetrics = [];
+
+
 
 const selectorsContainer =
     document.getElementById(
         "comparison-selectors"
     );
 
-
 const addPlayerButton =
     document.getElementById(
         "add-player-button"
     );
-
 
 const clearButton =
     document.getElementById(
         "clear-comparison-button"
     );
 
-
-const traditionalGrid =
+const traditionalMetrics =
     document.getElementById(
-        "traditional-comparison-grid"
+        "traditional-metrics"
     );
 
-
-const customRatingsTable =
+const customMetrics =
     document.getElementById(
-        "custom-ratings-table"
+        "custom-metrics"
     );
 
+const traditionalSummary =
+    document.getElementById(
+        "traditional-summary"
+    );
 
 const overallComparison =
     document.getElementById(
         "overall-comparison"
     );
 
-
-const modeButtons =
-    document.querySelectorAll(
-        ".comparison-mode-button"
-    );
-
-
 const traditionalPanel =
     document.getElementById(
         "traditional-comparison"
     );
-
 
 const customPanel =
     document.getElementById(
         "custom-comparison"
     );
 
+const modeButtons =
+    document.querySelectorAll(
+        ".comparison-mode-button"
+    );
 
-// ==========================================================
-// STATE
-// ==========================================================
-
-let allProfiles = [];
-
-let playerIndex = [];
-
-let selectors = [];
-
-let radarChart = null;
 
 
 // ==========================================================
@@ -130,29 +106,18 @@ function formatNumber(
     decimals = 1
 ) {
 
+    const number =
+        Number(value);
+
+
     if (
         value === null
         ||
         value === undefined
         ||
         value === ""
-    ) {
-
-        return "—";
-
-    }
-
-
-    const number =
-        Number(
-            value
-        );
-
-
-    if (
-        Number.isNaN(
-            number
-        )
+        ||
+        Number.isNaN(number)
     ) {
 
         return "—";
@@ -173,9 +138,7 @@ function formatPercent(
 ) {
 
     const number =
-        Number(
-            value
-        );
+        Number(value);
 
 
     if (
@@ -183,9 +146,7 @@ function formatPercent(
         ||
         value === undefined
         ||
-        Number.isNaN(
-            number
-        )
+        Number.isNaN(number)
     ) {
 
         return "—";
@@ -194,25 +155,22 @@ function formatPercent(
 
 
     return (
-        number
-        *
-        100
+        number * 100
     ).toFixed(
         decimals
-    )
-    +
-    "%";
+    ) + "%";
 
 }
 
 
+
 // ==========================================================
-// BUILD PLAYER INDEX
+// PLAYER INDEX
 // ==========================================================
 
 function buildPlayerIndex() {
 
-    const map =
+    const playerMap =
         new Map();
 
 
@@ -225,13 +183,9 @@ function buildPlayerIndex() {
                 );
 
 
-            if (
-                !map.has(
-                    id
-                )
-            ) {
+            if (!playerMap.has(id)) {
 
-                map.set(
+                playerMap.set(
                     id,
                     {
                         player_id:
@@ -242,6 +196,16 @@ function buildPlayerIndex() {
                             ??
                             profile.player_name,
 
+                        search_name:
+                            (
+                                profile.display_name
+                                ??
+                                profile.player_name
+                                ??
+                                ""
+                            )
+                            .toLowerCase(),
+
                         seasons:
                             []
                     }
@@ -250,11 +214,10 @@ function buildPlayerIndex() {
             }
 
 
-            map.get(
-                id
-            ).seasons.push(
-                profile
-            );
+            playerMap
+                .get(id)
+                .seasons
+                .push(profile);
 
         }
     );
@@ -262,15 +225,12 @@ function buildPlayerIndex() {
 
     playerIndex =
         Array.from(
-            map.values()
+            playerMap.values()
         );
 
 
     playerIndex.sort(
-        (
-            a,
-            b
-        ) =>
+        (a, b) =>
             a.display_name.localeCompare(
                 b.display_name
             )
@@ -281,17 +241,10 @@ function buildPlayerIndex() {
         player => {
 
             player.seasons.sort(
-                (
-                    a,
-                    b
-                ) =>
-                    Number(
-                        b.season
-                    )
+                (a, b) =>
+                    Number(b.season)
                     -
-                    Number(
-                        a.season
-                    )
+                    Number(a.season)
             );
 
         }
@@ -300,8 +253,9 @@ function buildPlayerIndex() {
 }
 
 
+
 // ==========================================================
-// DEFAULT SELECTORS
+// DEFAULTS
 // ==========================================================
 
 function createDefaultSelectors() {
@@ -309,150 +263,52 @@ function createDefaultSelectors() {
     selectors = [];
 
 
-    if (
-        playerIndex.length
-        <
-        2
-    ) {
-
-        return;
-
-    }
-
-
     selectors.push(
         {
-
             player_id:
-                playerIndex[0]
-                .player_id,
+                playerIndex[0].player_id,
 
             season:
                 playerIndex[0]
-                .seasons[0]
-                .season
-
+                    .seasons[0]
+                    .season
         }
     );
 
 
     selectors.push(
         {
-
             player_id:
-                playerIndex[1]
-                .player_id,
+                playerIndex[1].player_id,
 
             season:
                 playerIndex[1]
-                .seasons[0]
-                .season
-
+                    .seasons[0]
+                    .season
         }
     );
 
 }
 
 
+
 // ==========================================================
-// PLAYER OPTIONS
+// PLAYER LOOKUP
 // ==========================================================
 
-function getPlayerOptions(
-    selectedPlayerId
+function findPlayer(
+    playerId
 ) {
 
-    return playerIndex
-        .map(
-            player => `
-
-                <option
-                    value="${player.player_id}"
-                    ${
-                        String(
-                            player.player_id
-                        )
-                        ===
-                        String(
-                            selectedPlayerId
-                        )
-                        ?
-                        "selected"
-                        :
-                        ""
-                    }
-                >
-                    ${player.display_name}
-                </option>
-
-            `
-        )
-        .join(
-            ""
-        );
+    return playerIndex.find(
+        player =>
+            String(player.player_id)
+            ===
+            String(playerId)
+    );
 
 }
 
-
-// ==========================================================
-// SEASON OPTIONS
-// ==========================================================
-
-function getSeasonOptions(
-    playerId,
-    selectedSeason
-) {
-
-    const player =
-        playerIndex.find(
-            item =>
-                String(
-                    item.player_id
-                )
-                ===
-                String(
-                    playerId
-                )
-        );
-
-
-    if (!player) {
-
-        return "";
-
-    }
-
-
-    return player.seasons
-        .map(
-            profile => `
-
-                <option
-                    value="${profile.season}"
-                    ${
-                        String(
-                            profile.season
-                        )
-                        ===
-                        String(
-                            selectedSeason
-                        )
-                        ?
-                        "selected"
-                        :
-                        ""
-                    }
-                >
-                    ${profile.season}
-                </option>
-
-            `
-        )
-        .join(
-            ""
-        );
-
-}
 
 
 // ==========================================================
@@ -467,95 +323,125 @@ function renderSelectors() {
             (
                 selector,
                 index
-            ) => `
+            ) => {
 
-                <article
-                    class="comparison-selector"
-                    data-index="${index}"
-                >
-
-                    <p class="selector-number">
-                        Player ${index + 1}
-                    </p>
+                const player =
+                    findPlayer(
+                        selector.player_id
+                    );
 
 
-                    ${
-                        selectors.length
-                        >
-                        MIN_PLAYERS
-                        ?
-                        `
+                const seasons =
+                    player.seasons
+                    .map(
+                        profile => `
 
-                            <button
-                                class="remove-player-button"
-                                data-remove-index="${index}"
-                                type="button"
-                                aria-label="Remove player"
-                            >
-                                ×
-                            </button>
-
-                        `
-                        :
-                        ""
-                    }
-
-
-                    <div class="selector-fields">
-
-
-                        <div class="selector-field">
-
-                            <label>
-                                Player
-                            </label>
-
-
-                            <select
-                                class="player-select"
-                                data-index="${index}"
-                            >
+                            <option
+                                value="${profile.season}"
                                 ${
-                                    getPlayerOptions(
-                                        selector.player_id
-                                    )
+                                    String(profile.season)
+                                    ===
+                                    String(selector.season)
+                                    ?
+                                    "selected"
+                                    :
+                                    ""
                                 }
-                            </select>
+                            >
+                                ${profile.season}
+                            </option>
+
+                        `
+                    )
+                    .join("");
+
+
+                return `
+
+                    <article
+                        class="comparison-selector"
+                        data-selector-index="${index}"
+                    >
+
+                        <p class="selector-number">
+                            Player ${index + 1}
+                        </p>
+
+
+                        ${
+                            selectors.length > MIN_PLAYERS
+                            ?
+                            `
+
+                                <button
+                                    class="remove-player-button"
+                                    data-remove="${index}"
+                                    type="button"
+                                >
+                                    ×
+                                </button>
+
+                            `
+                            :
+                            ""
+                        }
+
+
+                        <div class="selector-fields">
+
+
+                            <div class="selector-field">
+
+                                <label>
+                                    Player
+                                </label>
+
+
+                                <input
+                                    class="player-search-input"
+                                    data-player-index="${index}"
+                                    type="search"
+                                    value="${player.display_name}"
+                                    autocomplete="off"
+                                >
+
+
+                                <div
+                                    class="player-suggestions"
+                                    data-suggestions-index="${index}"
+                                    hidden
+                                >
+                                </div>
+
+                            </div>
+
+
+                            <div class="selector-field">
+
+                                <label>
+                                    Season
+                                </label>
+
+
+                                <select
+                                    class="season-select"
+                                    data-season-index="${index}"
+                                >
+                                    ${seasons}
+                                </select>
+
+                            </div>
+
 
                         </div>
 
+                    </article>
 
-                        <div class="selector-field">
+                `;
 
-                            <label>
-                                Season
-                            </label>
-
-
-                            <select
-                                class="season-select"
-                                data-index="${index}"
-                            >
-                                ${
-                                    getSeasonOptions(
-                                        selector.player_id,
-                                        selector.season
-                                    )
-                                }
-                            </select>
-
-                        </div>
-
-
-                    </div>
-
-                </article>
-
-            `
+            }
         )
-        .join(
-            ""
-        );
+        .join("");
 
 
     addPlayerButton.disabled =
@@ -569,60 +455,220 @@ function renderSelectors() {
 }
 
 
+
+// ==========================================================
+// SEARCH SUGGESTIONS
+// ==========================================================
+
+function showPlayerSuggestions(
+    index,
+    query
+) {
+
+    const container =
+        document.querySelector(
+            `[data-suggestions-index="${index}"]`
+        );
+
+
+    const cleaned =
+        query
+        .trim()
+        .toLowerCase();
+
+
+    if (!cleaned) {
+
+        container.hidden = true;
+
+        return;
+
+    }
+
+
+    const matches =
+        playerIndex
+        .filter(
+            player =>
+                player.search_name
+                .includes(cleaned)
+        )
+        .slice(
+            0,
+            12
+        );
+
+
+    if (
+        matches.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="player-suggestion">
+                No players found
+            </div>
+
+        `;
+
+        container.hidden = false;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        matches
+        .map(
+            player => `
+
+                <button
+                    class="player-suggestion"
+                    data-select-player="${player.player_id}"
+                    data-select-index="${index}"
+                    type="button"
+                >
+
+                    ${player.display_name}
+
+                    <small>
+                        ${
+                            player.seasons[
+                                player.seasons.length - 1
+                            ].season
+                        }
+                        –
+                        ${
+                            player.seasons[0].season
+                        }
+                    </small>
+
+                </button>
+
+            `
+        )
+        .join("");
+
+
+    container.hidden = false;
+
+
+    container
+        .querySelectorAll(
+            "[data-select-player]"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        selectPlayer(
+                            Number(
+                                button.dataset.selectIndex
+                            ),
+                            button.dataset.selectPlayer
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+
+// ==========================================================
+// SELECT PLAYER
+// ==========================================================
+
+function selectPlayer(
+    index,
+    playerId
+) {
+
+    const player =
+        findPlayer(
+            playerId
+        );
+
+
+    selectors[index] = {
+
+        player_id:
+            player.player_id,
+
+        season:
+            player.seasons[0].season
+
+    };
+
+
+    renderSelectors();
+
+    renderComparison();
+
+}
+
+
+
 // ==========================================================
 // SELECTOR EVENTS
 // ==========================================================
 
 function attachSelectorEvents() {
 
+
     document
         .querySelectorAll(
-            ".player-select"
+            ".player-search-input"
         )
         .forEach(
-            select => {
+            input => {
 
-                select.addEventListener(
-                    "change",
+                input.addEventListener(
+                    "input",
                     event => {
 
                         const index =
                             Number(
-                                event.target.dataset.index
+                                event.target.dataset.playerIndex
                             );
 
 
-                        const playerId =
-                            event.target.value;
+                        showPlayerSuggestions(
+                            index,
+                            event.target.value
+                        );
+
+                    }
+                );
 
 
-                        const player =
-                            playerIndex.find(
-                                item =>
-                                    String(
-                                        item.player_id
-                                    )
-                                    ===
-                                    String(
-                                        playerId
-                                    )
+                input.addEventListener(
+                    "focus",
+                    event => {
+
+                        const index =
+                            Number(
+                                event.target.dataset.playerIndex
                             );
 
 
-                        selectors[index]
-                            .player_id =
-                            playerId;
+                        if (
+                            event.target.value
+                        ) {
 
+                            showPlayerSuggestions(
+                                index,
+                                event.target.value
+                            );
 
-                        selectors[index]
-                            .season =
-                            player.seasons[0]
-                            .season;
-
-
-                        renderSelectors();
-
-                        renderComparison();
+                        }
 
                     }
                 );
@@ -644,7 +690,7 @@ function attachSelectorEvents() {
 
                         const index =
                             Number(
-                                event.target.dataset.index
+                                event.target.dataset.seasonIndex
                             );
 
 
@@ -671,16 +717,12 @@ function attachSelectorEvents() {
 
                 button.addEventListener(
                     "click",
-                    event => {
-
-                        const index =
-                            Number(
-                                event.target.dataset.removeIndex
-                            );
-
+                    () => {
 
                         selectors.splice(
-                            index,
+                            Number(
+                                button.dataset.remove
+                            ),
                             1
                         );
 
@@ -698,6 +740,7 @@ function attachSelectorEvents() {
 }
 
 
+
 // ==========================================================
 // GET SELECTED PROFILES
 // ==========================================================
@@ -710,812 +753,316 @@ function getSelectedProfiles() {
                 allProfiles.find(
                     profile =>
 
-                        String(
-                            profile.player_id
-                        )
+                        String(profile.player_id)
                         ===
-                        String(
-                            selector.player_id
-                        )
+                        String(selector.player_id)
 
                         &&
 
-                        String(
-                            profile.season
-                        )
+                        String(profile.season)
                         ===
-                        String(
-                            selector.season
-                        )
+                        String(selector.season)
 
                 )
         )
-        .filter(
-            Boolean
-        );
+        .filter(Boolean);
 
 }
 
 
+
 // ==========================================================
-// TABLE
+// PERCENTILE
 // ==========================================================
 
-function buildComparisonTable(
-    profiles,
-    metrics
+function percentileRank(
+    value,
+    values
 ) {
 
+    const valid =
+        values
+        .map(Number)
+        .filter(Number.isFinite)
+        .sort(
+            (a, b) =>
+                a - b
+        );
+
+
+    const number =
+        Number(value);
+
+
     if (
-        profiles.length
-        ===
-        0
+        !Number.isFinite(number)
+        ||
+        valid.length === 0
     ) {
 
-        return `
-
-            <div class="comparison-empty">
-                Select players to begin comparing seasons.
-            </div>
-
-        `;
+        return 0;
 
     }
 
 
-    const header =
-        profiles
-        .map(
-            profile => `
+    const below =
+        valid.filter(
+            item =>
+                item < number
+        ).length;
 
-                <th>
-                    ${
-                        profile.display_name
-                        ??
-                        profile.player_name
-                    }
-                    <br>
-                    <span>
-                        ${profile.season}
-                    </span>
-                </th>
 
-            `
+    const equal =
+        valid.filter(
+            item =>
+                item === number
+        ).length;
+
+
+    return (
+        (
+            below
+            +
+            0.5 * equal
         )
-        .join(
-            ""
-        );
-
-
-    const rows =
-        metrics
-        .map(
-            metric => {
-
-                const cells =
-                    profiles
-                    .map(
-                        profile => `
-
-                            <td>
-                                ${
-                                    metric.format(
-                                        profile[
-                                            metric.key
-                                        ]
-                                    )
-                                }
-                            </td>
-
-                        `
-                    )
-                    .join(
-                        ""
-                    );
-
-
-                return `
-
-                    <tr>
-
-                        <td>
-                            ${metric.label}
-                        </td>
-
-                        ${cells}
-
-                    </tr>
-
-                `;
-
-            }
-        )
-        .join(
-            ""
-        );
-
-
-    return `
-
-        <table class="comparison-table">
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Metric
-                    </th>
-
-                    ${header}
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-                ${rows}
-
-            </tbody>
-
-        </table>
-
-    `;
+        /
+        valid.length
+        *
+        100
+    );
 
 }
 
 
+
 // ==========================================================
-// TRADITIONAL
+// TRADITIONAL RADAR
 // ==========================================================
 
-function renderTraditional(
-    profiles
+const TRADITIONAL_RADAR_METRICS = [
+
+    {
+        label: "Scoring",
+        key: "points_per_game"
+    },
+
+    {
+        label: "Rebounding",
+        key: "rebounds_per_game"
+    },
+
+    {
+        label: "Playmaking",
+        key: "assists_per_game"
+    },
+
+    {
+        label: "Steals",
+        key: "steals_per_game"
+    },
+
+    {
+        label: "Blocks",
+        key: "blocks_per_game"
+    },
+
+    {
+        label: "Efficiency",
+        key: "true_shooting_pct"
+    },
+
+    {
+        label: "Production",
+        key: "production_per_36"
+    }
+
+];
+
+
+function traditionalPercentile(
+    profile,
+    metricKey
 ) {
 
-    const metrics = [
-
-        {
-            label:
-                "Games",
-
-            key:
-                "games_played",
-
-            format:
-                value =>
-                    formatNumber(
-                        value,
-                        0
-                    )
-        },
-
-        {
-            label:
-                "Minutes / Game",
-
-            key:
-                "minutes_per_game",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Points / Game",
-
-            key:
-                "points_per_game",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Rebounds / Game",
-
-            key:
-                "rebounds_per_game",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Assists / Game",
-
-            key:
-                "assists_per_game",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Steals / Game",
-
-            key:
-                "steals_per_game",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Blocks / Game",
-
-            key:
-                "blocks_per_game",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "True Shooting",
-
-            key:
-                "true_shooting_pct",
-
-            format:
-                value =>
-                    formatPercent(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Effective FG",
-
-            key:
-                "effective_fg_pct",
-
-            format:
-                value =>
-                    formatPercent(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Points / 36",
-
-            key:
-                "points_per_36",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Rebounds / 36",
-
-            key:
-                "rebounds_per_36",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Assists / 36",
-
-            key:
-                "assists_per_36",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Production / 36",
-
-            key:
-                "production_per_36",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        }
-
-    ];
-
-
-    traditionalGrid.innerHTML =
-        buildComparisonTable(
-            profiles,
-            metrics
+    const seasonPopulation =
+        allProfiles.filter(
+            item =>
+                String(item.season)
+                ===
+                String(profile.season)
         );
 
-}
 
+    return percentileRank(
 
-// ==========================================================
-// CUSTOM RATINGS TABLE
-// ==========================================================
+        profile[metricKey],
 
-function renderCustomTable(
-    profiles
-) {
-
-    const metrics = [
-
-        {
-            label:
-                "Impact",
-
-            key:
-                "impact",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Dominance",
-
-            key:
-                "dominance",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Efficiency",
-
-            key:
-                "efficiency",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Consistency",
-
-            key:
-                "consistency",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Clutch",
-
-            key:
-                "clutch",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Availability",
-
-            key:
-                "availability",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        },
-
-        {
-            label:
-                "Momentum",
-
-            key:
-                "momentum",
-
-            format:
-                value =>
-                    formatNumber(
-                        value
-                    )
-        }
-
-    ];
-
-
-    customRatingsTable.innerHTML =
-        buildComparisonTable(
-            profiles,
-            metrics
-        );
-
-}
-
-
-// ==========================================================
-// OVERALL CARDS
-// ==========================================================
-
-function renderOverall(
-    profiles
-) {
-
-    overallComparison.innerHTML =
-        profiles
-        .map(
-            profile => `
-
-                <article class="overall-player">
-
-                    <p class="overall-player-name">
-                        ${
-                            profile.display_name
-                            ??
-                            profile.player_name
-                        }
-                    </p>
-
-
-                    <p class="overall-player-season">
-                        ${profile.season}
-                        •
-                        ${profile.team ?? "—"}
-                    </p>
-
-
-                    <p class="overall-player-score">
-                        ${
-                            formatNumber(
-                                profile.season_overall
-                            )
-                        }
-                    </p>
-
-
-                    <p class="overall-player-archetype">
-                        ${
-                            profile.season_archetype
-                            ??
-                            ""
-                        }
-                    </p>
-
-                </article>
-
-            `
+        seasonPopulation.map(
+            item =>
+                item[metricKey]
         )
-        .join(
-            ""
-        );
+
+    );
 
 }
 
 
+
 // ==========================================================
-// RADAR CHART
+// CHART CREATOR
 // ==========================================================
 
-function renderRadarChart(
-    profiles
+function createRadarChart(
+    canvasId,
+    profiles,
+    labels,
+    dataGetter,
+    existingChart
 ) {
 
     const canvas =
         document.getElementById(
-            "ratings-radar-chart"
+            canvasId
         );
 
 
-    if (!canvas) {
+    if (existingChart) {
 
-        return;
+        existingChart.destroy();
 
     }
 
 
-    const labels = [
+    return new Chart(
+        canvas,
+        {
 
-        "Impact",
-        "Dominance",
-        "Efficiency",
-        "Consistency",
-        "Clutch",
-        "Availability",
-        "Momentum"
-
-    ];
+            type:
+                "radar",
 
 
-    const ratingKeys = [
+            data: {
 
-        "impact",
-        "dominance",
-        "efficiency",
-        "consistency",
-        "clutch",
-        "availability",
-        "momentum"
+                labels,
 
-    ];
+                datasets:
+                    profiles.map(
+                        (
+                            profile,
+                            index
+                        ) => {
 
-
-    const datasets =
-        profiles
-        .map(
-            (
-                profile,
-                index
-            ) => {
-
-                const colour =
-                    PLAYER_COLOURS[
-                        index
-                    ];
+                            const colour =
+                                PLAYER_COLOURS[index];
 
 
-                return {
+                            return {
 
-                    label:
-                        `${
-                            profile.display_name
-                            ??
-                            profile.player_name
-                        } ${
-                            profile.season
-                        }`,
+                                label:
+                                    `${
+                                        profile.display_name
+                                    } ${
+                                        profile.season
+                                    }`,
 
-                    data:
-                        ratingKeys
-                        .map(
-                            key =>
-                                Number(
-                                    profile[
-                                        key
-                                    ]
-                                )
-                                ||
-                                0
-                        ),
+                                data:
+                                    dataGetter(
+                                        profile
+                                    ),
 
-                    borderColor:
-                        colour.border,
+                                borderColor:
+                                    colour.border,
 
-                    backgroundColor:
-                        colour.background,
+                                backgroundColor:
+                                    colour.background,
 
-                    pointBackgroundColor:
-                        colour.border,
+                                pointBackgroundColor:
+                                    colour.border,
 
-                    pointBorderColor:
-                        "#ffffff",
+                                pointBorderColor:
+                                    "#fff",
 
-                    pointHoverBackgroundColor:
-                        "#ffffff",
+                                borderWidth: 2,
 
-                    pointHoverBorderColor:
-                        colour.border,
+                                pointRadius: 3,
 
-                    borderWidth:
-                        2,
+                                fill: true
 
-                    pointRadius:
-                        3,
+                            };
 
-                    pointHoverRadius:
-                        5,
+                        }
+                    )
 
-                    fill:
-                        true
-
-                };
-
-            }
-        );
+            },
 
 
-    if (radarChart) {
+            options: {
 
-        radarChart.destroy();
+                responsive: true,
 
-    }
-
-
-    radarChart =
-        new Chart(
-            canvas,
-            {
-
-                type:
-                    "radar",
+                maintainAspectRatio: false,
 
 
-                data: {
+                plugins: {
 
-                    labels:
-                        labels,
+                    legend: {
 
-                    datasets:
-                        datasets
+                        position: "bottom",
+
+                        labels: {
+
+                            color: "#f5f7fb",
+
+                            padding: 16,
+
+                            usePointStyle: true
+
+                        }
+
+                    }
 
                 },
 
 
-                options: {
+                scales: {
 
-                    responsive:
-                        true,
+                    r: {
 
-                    maintainAspectRatio:
-                        false,
+                        min: 0,
 
+                        max: 100,
 
-                    interaction: {
+                        ticks: {
 
-                        mode:
-                            "nearest",
+                            display: false,
 
-                        intersect:
-                            false
-
-                    },
-
-
-                    plugins: {
-
-                        legend: {
-
-                            position:
-                                "bottom",
-
-                            labels: {
-
-                                color:
-                                    "#f5f7fb",
-
-                                padding:
-                                    18,
-
-                                usePointStyle:
-                                    true
-
-                            }
+                            stepSize: 20
 
                         },
 
+                        grid: {
 
-                        tooltip: {
+                            color:
+                                "rgba(165,173,189,0.18)"
 
-                            callbacks: {
+                        },
 
-                                label:
-                                    context => {
+                        angleLines: {
 
-                                        return (
-                                            `${context.dataset.label}: `
-                                            +
-                                            `${context.formattedValue}`
-                                        );
+                            color:
+                                "rgba(165,173,189,0.18)"
 
-                                    }
+                        },
 
-                            }
+                        pointLabels: {
 
-                        }
+                            color: "#f5f7fb",
 
-                    },
+                            font: {
 
+                                size: 12,
 
-                    scales: {
-
-                        r: {
-
-                            min:
-                                0,
-
-                            max:
-                                100,
-
-
-                            ticks: {
-
-                                display:
-                                    false,
-
-                                stepSize:
-                                    20
-
-                            },
-
-
-                            grid: {
-
-                                color:
-                                    "rgba(165, 173, 189, 0.18)"
-
-                            },
-
-
-                            angleLines: {
-
-                                color:
-                                    "rgba(165, 173, 189, 0.18)"
-
-                            },
-
-
-                            pointLabels: {
-
-                                color:
-                                    "#f5f7fb",
-
-                                font: {
-
-                                    size:
-                                        13,
-
-                                    weight:
-                                        "600"
-
-                                }
+                                weight: "600"
 
                             }
 
@@ -1526,13 +1073,665 @@ function renderRadarChart(
                 }
 
             }
+
+        }
+    );
+
+}
+
+
+
+// ==========================================================
+// TRADITIONAL METRICS
+// ==========================================================
+
+const TRADITIONAL_METRICS = [
+
+    {
+        label: "Points / Game",
+        key: "points_per_game",
+        format: formatNumber
+    },
+
+    {
+        label: "Rebounds / Game",
+        key: "rebounds_per_game",
+        format: formatNumber
+    },
+
+    {
+        label: "Assists / Game",
+        key: "assists_per_game",
+        format: formatNumber
+    },
+
+    {
+        label: "Steals / Game",
+        key: "steals_per_game",
+        format: formatNumber
+    },
+
+    {
+        label: "Blocks / Game",
+        key: "blocks_per_game",
+        format: formatNumber
+    },
+
+    {
+        label: "True Shooting",
+        key: "true_shooting_pct",
+        format: formatPercent
+    },
+
+    {
+        label: "Points / 36",
+        key: "points_per_36",
+        format: formatNumber
+    },
+
+    {
+        label: "Production / 36",
+        key: "production_per_36",
+        format: formatNumber
+    }
+
+];
+
+
+
+// ==========================================================
+// CUSTOM METRICS
+// ==========================================================
+
+const CUSTOM_METRICS = [
+
+    {
+        label: "Impact",
+        key: "impact"
+    },
+
+    {
+        label: "Dominance",
+        key: "dominance"
+    },
+
+    {
+        label: "Efficiency",
+        key: "efficiency"
+    },
+
+    {
+        label: "Consistency",
+        key: "consistency"
+    },
+
+    {
+        label: "Clutch",
+        key: "clutch"
+    },
+
+    {
+        label: "Availability",
+        key: "availability"
+    },
+
+    {
+        label: "Momentum",
+        key: "momentum"
+    }
+
+];
+
+
+
+// ==========================================================
+// METRIC ROWS
+// ==========================================================
+
+function renderMetricRows(
+    container,
+    profiles,
+    metrics,
+    includeInfo
+) {
+
+    container.style.setProperty(
+        "--compare-count",
+        profiles.length
+    );
+
+
+    container.innerHTML =
+        metrics
+        .map(
+            metric => `
+
+                <article class="metric-row">
+
+                    <div class="metric-info">
+
+                        <p class="metric-name">
+                            ${metric.label}
+                        </p>
+
+
+                        ${
+                            includeInfo
+                            ?
+                            `
+
+                                <button
+                                    class="learn-more-button"
+                                    data-metric-info="${metric.label}"
+                                    type="button"
+                                >
+                                    Find out more
+                                </button>
+
+                            `
+                            :
+                            ""
+                        }
+
+                    </div>
+
+
+                    <div class="metric-values">
+
+                        ${
+                            profiles
+                            .map(
+                                profile => `
+
+                                    <div class="metric-player-value">
+
+                                        <strong>
+                                            ${
+                                                metric.format
+                                                ?
+                                                metric.format(
+                                                    profile[
+                                                        metric.key
+                                                    ]
+                                                )
+                                                :
+                                                formatNumber(
+                                                    profile[
+                                                        metric.key
+                                                    ]
+                                                )
+                                            }
+                                        </strong>
+
+                                        <span>
+                                            ${profile.display_name}
+                                            ${profile.season}
+                                        </span>
+
+                                    </div>
+
+                                `
+                            )
+                            .join("")
+                        }
+
+                    </div>
+
+                </article>
+
+            `
+        )
+        .join("");
+
+
+    container
+        .querySelectorAll(
+            "[data-metric-info]"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        openMetricModal(
+                            button.dataset.metricInfo
+                        );
+
+                    }
+                );
+
+            }
         );
 
 }
 
 
+
 // ==========================================================
-// RENDER ALL
+// SUMMARIES
+// ==========================================================
+
+function teamLink(
+    profile
+) {
+
+    if (!profile.team) {
+
+        return "—";
+
+    }
+
+
+    return `
+
+        <a
+            class="team-link"
+            href="./team.html?team=${
+                encodeURIComponent(
+                    profile.team
+                )
+            }&season=${
+                encodeURIComponent(
+                    profile.season
+                )
+            }"
+        >
+            ${profile.team}
+        </a>
+
+    `;
+
+}
+
+
+function renderTraditionalSummary(
+    profiles
+) {
+
+    traditionalSummary.innerHTML =
+        `
+
+            <p class="eyebrow">
+                Selected Seasons
+            </p>
+
+            ${
+                profiles
+                .map(
+                    profile => `
+
+                        <article class="summary-player">
+
+                            <p class="summary-name">
+                                ${profile.display_name}
+                            </p>
+
+                            <p class="summary-season">
+                                ${profile.season}
+                                •
+                                ${teamLink(profile)}
+                            </p>
+
+                            <p class="summary-main-stat">
+                                ${
+                                    formatNumber(
+                                        profile.points_per_game
+                                    )
+                                }
+                                PPG
+                            </p>
+
+                        </article>
+
+                    `
+                )
+                .join("")
+            }
+
+        `;
+
+}
+
+
+function renderOverall(
+    profiles
+) {
+
+    overallComparison.innerHTML =
+        `
+
+            <p class="eyebrow">
+                Overall
+            </p>
+
+            ${
+                profiles
+                .map(
+                    profile => `
+
+                        <article class="overall-player">
+
+                            <p class="overall-player-name">
+                                ${profile.display_name}
+                            </p>
+
+                            <p class="overall-player-season">
+                                ${profile.season}
+                                •
+                                ${teamLink(profile)}
+                            </p>
+
+                            <p class="overall-player-score">
+                                ${
+                                    formatNumber(
+                                        profile.season_overall
+                                    )
+                                }
+                            </p>
+
+                            <p class="overall-player-archetype">
+                                ${
+                                    profile.season_archetype
+                                    ??
+                                    ""
+                                }
+                            </p>
+
+                        </article>
+
+                    `
+                )
+                .join("")
+            }
+
+        `;
+
+}
+
+
+
+// ==========================================================
+// METRIC INFORMATION
+// ==========================================================
+
+const METRIC_DESCRIPTIONS = {
+
+    Impact:
+        "Impact represents how strongly a player's production and team-level influence stand out within the season.",
+
+    Dominance:
+        "Dominance captures the degree to which a player imposed herself statistically through volume, production and high-end performances.",
+
+    Efficiency:
+        "Efficiency measures how effectively a player converted possessions and opportunities into production.",
+
+    Consistency:
+        "Consistency measures stability from game to game rather than simply rewarding a player's highest peaks.",
+
+    Clutch:
+        "Clutch represents performance in higher-leverage or demanding game situations used by the CourtIndex model.",
+
+    Availability:
+        "Availability rewards players who consistently appeared, played meaningful minutes and provided a reliable season-long sample.",
+
+    Momentum:
+        "Momentum measures how a player's form changed through the season, including late-season and rolling-form indicators."
+
+};
+
+
+function openMetricModal(
+    metricName
+) {
+
+    const modal =
+        document.getElementById(
+            "metric-modal"
+        );
+
+
+    document.getElementById(
+        "metric-modal-title"
+    ).textContent =
+        metricName;
+
+
+    document.getElementById(
+        "metric-modal-description"
+    ).textContent =
+        METRIC_DESCRIPTIONS[
+            metricName
+        ]
+        ??
+        "";
+
+
+    const detailsContainer =
+        document.getElementById(
+            "metric-model-details"
+        );
+
+
+    const matches =
+        modelMetrics.filter(
+            row =>
+                String(
+                    row.axis
+                    ??
+                    ""
+                )
+                .toLowerCase()
+                ===
+                metricName.toLowerCase()
+        );
+
+
+    if (
+        matches.length === 0
+    ) {
+
+        detailsContainer.innerHTML = `
+
+            <p class="modal-description">
+                Detailed model components are not yet
+                available in the frontend data file.
+            </p>
+
+        `;
+
+    } else {
+
+        detailsContainer.innerHTML = `
+
+            <div class="metric-detail-list">
+
+                ${
+                    matches
+                    .map(
+                        row => `
+
+                            <div class="metric-detail-item">
+
+                                <span>
+                                    ${
+                                        row.metric
+                                        ??
+                                        "Metric"
+                                    }
+                                </span>
+
+                                <strong>
+                                    ${
+                                        row.weight
+                                        ??
+                                        row.metric_weight
+                                        ??
+                                        ""
+                                    }
+                                </strong>
+
+                            </div>
+
+                        `
+                    )
+                    .join("")
+                }
+
+            </div>
+
+        `;
+
+    }
+
+
+    modal.hidden = false;
+
+}
+
+
+document
+    .querySelectorAll(
+        "[data-close-modal]"
+    )
+    .forEach(
+        element => {
+
+            element.addEventListener(
+                "click",
+                () => {
+
+                    document.getElementById(
+                        "metric-modal"
+                    ).hidden = true;
+
+                }
+            );
+
+        }
+    );
+
+
+
+// ==========================================================
+// ARCHETYPES
+// ==========================================================
+
+const ARCHETYPE_GUIDE = [
+
+    [
+        "Elite Season",
+        "A high-level all-around season with strength across several rating categories."
+    ],
+
+    [
+        "Dominant Force",
+        "A season defined by exceptional production and dominance."
+    ],
+
+    [
+        "Game Changer",
+        "A strong impact profile with meaningful influence across multiple dimensions."
+    ],
+
+    [
+        "Iron Season",
+        "A season distinguished by durability, reliability and strong availability."
+    ],
+
+    [
+        "Clinical",
+        "A profile strongly associated with efficient production."
+    ],
+
+    [
+        "Pressure Performer",
+        "A season with a particularly strong clutch profile."
+    ],
+
+    [
+        "Rising Finish",
+        "A season whose momentum indicators show a strong finish."
+    ],
+
+    [
+        "Metronome",
+        "A steadier profile associated with consistent, repeatable production."
+    ]
+
+];
+
+
+const archetypeGuide =
+    document.getElementById(
+        "archetype-guide"
+    );
+
+
+archetypeGuide.innerHTML =
+    ARCHETYPE_GUIDE
+    .map(
+        item => `
+
+            <div class="archetype-guide-item">
+
+                <strong>
+                    ${item[0]}
+                </strong>
+
+                <p>
+                    ${item[1]}
+                </p>
+
+            </div>
+
+        `
+    )
+    .join("");
+
+
+document
+    .getElementById(
+        "archetype-help-button"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "archetype-modal"
+            ).hidden = false;
+
+        }
+    );
+
+
+document
+    .querySelectorAll(
+        "[data-close-archetype]"
+    )
+    .forEach(
+        element => {
+
+            element.addEventListener(
+                "click",
+                () => {
+
+                    document.getElementById(
+                        "archetype-modal"
+                    ).hidden = true;
+
+                }
+            );
+
+        }
+    );
+
+
+
+// ==========================================================
+// RENDER
 // ==========================================================
 
 function renderComparison() {
@@ -1541,12 +1740,64 @@ function renderComparison() {
         getSelectedProfiles();
 
 
-    renderTraditional(
-        profiles
-    );
+    traditionalRadarChart =
+        createRadarChart(
+
+            "traditional-radar-chart",
+
+            profiles,
+
+            TRADITIONAL_RADAR_METRICS.map(
+                metric =>
+                    metric.label
+            ),
+
+            profile =>
+                TRADITIONAL_RADAR_METRICS
+                .map(
+                    metric =>
+                        traditionalPercentile(
+                            profile,
+                            metric.key
+                        )
+                ),
+
+            traditionalRadarChart
+
+        );
 
 
-    renderCustomTable(
+    customRadarChart =
+        createRadarChart(
+
+            "ratings-radar-chart",
+
+            profiles,
+
+            CUSTOM_METRICS.map(
+                metric =>
+                    metric.label
+            ),
+
+            profile =>
+                CUSTOM_METRICS
+                .map(
+                    metric =>
+                        Number(
+                            profile[
+                                metric.key
+                            ]
+                        )
+                        ||
+                        0
+                ),
+
+            customRadarChart
+
+        );
+
+
+    renderTraditionalSummary(
         profiles
     );
 
@@ -1556,15 +1807,37 @@ function renderComparison() {
     );
 
 
-    renderRadarChart(
-        profiles
+    renderMetricRows(
+
+        traditionalMetrics,
+
+        profiles,
+
+        TRADITIONAL_METRICS,
+
+        false
+
+    );
+
+
+    renderMetricRows(
+
+        customMetrics,
+
+        profiles,
+
+        CUSTOM_METRICS,
+
+        true
+
     );
 
 }
 
 
+
 // ==========================================================
-// ADD PLAYER
+// ADD / RESET
 // ==========================================================
 
 addPlayerButton.addEventListener(
@@ -1582,26 +1855,19 @@ addPlayerButton.addEventListener(
         }
 
 
-        const defaultPlayer =
+        const player =
             playerIndex[
                 selectors.length
-                %
-                playerIndex.length
             ];
 
 
         selectors.push(
             {
-
                 player_id:
-                    defaultPlayer
-                    .player_id,
+                    player.player_id,
 
                 season:
-                    defaultPlayer
-                    .seasons[0]
-                    .season
-
+                    player.seasons[0].season
             }
         );
 
@@ -1613,10 +1879,6 @@ addPlayerButton.addEventListener(
     }
 );
 
-
-// ==========================================================
-// CLEAR
-// ==========================================================
 
 clearButton.addEventListener(
     "click",
@@ -1632,8 +1894,9 @@ clearButton.addEventListener(
 );
 
 
+
 // ==========================================================
-// MODE BUTTONS
+// VIEW MODE
 // ==========================================================
 
 modeButtons.forEach(
@@ -1656,35 +1919,42 @@ modeButtons.forEach(
                 );
 
 
-                const mode =
-                    button.dataset.mode;
+                const custom =
+                    button.dataset.mode
+                    ===
+                    "custom";
 
 
                 traditionalPanel.classList.toggle(
                     "active",
-                    mode
-                    ===
-                    "traditional"
+                    !custom
                 );
 
 
                 customPanel.classList.toggle(
                     "active",
-                    mode
-                    ===
-                    "custom"
+                    custom
                 );
 
 
                 if (
-                    mode
-                    ===
-                    "custom"
+                    custom
                     &&
-                    radarChart
+                    customRadarChart
                 ) {
 
-                    radarChart.resize();
+                    customRadarChart.resize();
+
+                }
+
+
+                if (
+                    !custom
+                    &&
+                    traditionalRadarChart
+                ) {
+
+                    traditionalRadarChart.resize();
 
                 }
 
@@ -1695,6 +1965,7 @@ modeButtons.forEach(
 );
 
 
+
 // ==========================================================
 // LOAD DATA
 // ==========================================================
@@ -1703,33 +1974,55 @@ async function loadComparisonData() {
 
     try {
 
-        const response =
+        const profileResponse =
             await fetch(
                 "./data/player_season_profiles.json"
             );
 
 
-        if (!response.ok) {
+        allProfiles =
+            await profileResponse.json();
 
-            throw new Error(
-                `Unable to load profile data: ${response.status}`
+
+        /*
+         model_metrics.json is optional for now.
+         If it exists, Find Out More will show
+         the exact stored metric components.
+        */
+
+        try {
+
+            const modelResponse =
+                await fetch(
+                    "./data/model_metrics.json"
+                );
+
+
+            if (
+                modelResponse.ok
+            ) {
+
+                modelMetrics =
+                    await modelResponse.json();
+
+            }
+
+        } catch (
+            error
+        ) {
+
+            console.log(
+                "Model details not loaded."
             );
 
         }
 
 
-        allProfiles =
-            await response.json();
-
-
         buildPlayerIndex();
-
 
         createDefaultSelectors();
 
-
         renderSelectors();
-
 
         renderComparison();
 
@@ -1739,28 +2032,13 @@ async function loadComparisonData() {
     ) {
 
         console.error(
-            "COMPARE PAGE ERROR:",
+            "COMPARE ERROR:",
             error
         );
-
-
-        selectorsContainer.innerHTML = `
-
-            <div class="comparison-empty">
-
-                Comparison data could not be loaded.
-
-            </div>
-
-        `;
 
     }
 
 }
 
-
-// ==========================================================
-// START
-// ==========================================================
 
 loadComparisonData();
