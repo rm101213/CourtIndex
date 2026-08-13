@@ -28,319 +28,475 @@
 </head>
 
 
-<body>
+<body class="compare-body">
 
 
-    <!-- =====================================================
-         HEADER
-         ===================================================== -->
+<header class="site-header">
 
-    <header class="site-header">
+    <div class="container nav-container">
 
-        <div class="container nav-container">
+        <a
+            href="./index.html"
+            class="logo"
+        >
+            CourtIndex
+        </a>
 
-            <a
-                href="./index.html"
-                class="logo"
-            >
-                CourtIndex
+
+        <nav class="main-nav">
+
+            <a href="./index.html">
+                Home
             </a>
 
+            <a href="./players.html">
+                Players
+            </a>
 
-            <nav class="main-nav">
+            <a
+                href="./compare.html"
+                class="active-nav"
+            >
+                Compare
+            </a>
 
-                <a href="./index.html">
-                    Home
-                </a>
+            <a href="#">
+                Archive
+            </a>
 
-                <a href="./players.html">
-                    Players
-                </a>
+        </nav>
 
-                <a
-                    href="./compare.html"
-                    class="active-nav"
-                >
-                    Compare
-                </a>
+    </div>
 
-                <a href="#">
-                    Archive
-                </a>
+</header>
 
-            </nav>
 
-        </div>
 
-    </header>
-
+<main class="compare-page">
 
 
     <!-- =====================================================
-         MAIN
+         INTRO
          ===================================================== -->
 
-    <main class="compare-page">
-
-
-        <!-- =================================================
-             INTRO
-             ================================================= -->
-
-        <section class="compare-hero">
-
-            <div class="container">
-
-                <p class="eyebrow">
-                    Player Comparison
-                </p>
-
-                <h1>
-                    Compare Seasons
-                </h1>
-
-                <p class="compare-intro">
-                    Compare up to four player-seasons using
-                    traditional statistics or CourtIndex custom ratings.
-                </p>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             SELECTION AREA
-             ================================================= -->
-
-        <section class="compare-builder">
-
-            <div class="container">
-
-
-                <div
-                    id="comparison-selectors"
-                    class="comparison-selectors"
-                >
-                </div>
-
-
-                <div class="comparison-actions">
-
-                    <button
-                        id="add-player-button"
-                        class="compare-button secondary-compare-button"
-                        type="button"
-                    >
-                        + Add Player
-                    </button>
-
-
-                    <button
-                        id="clear-comparison-button"
-                        class="compare-button ghost-compare-button"
-                        type="button"
-                    >
-                        Clear
-                    </button>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             MODE
-             ================================================= -->
-
-        <section class="comparison-results">
-
-            <div class="container">
-
-
-                <div class="comparison-toolbar">
-
-                    <div>
-
-                        <p class="eyebrow">
-                            Comparison View
-                        </p>
-
-                        <h2>
-                            Season Comparison
-                        </h2>
-
-                    </div>
-
-
-                    <div
-                        class="comparison-mode-toggle"
-                        role="group"
-                        aria-label="Comparison mode"
-                    >
-
-                        <button
-                            class="comparison-mode-button active"
-                            data-mode="traditional"
-                            type="button"
-                        >
-                            Traditional
-                        </button>
-
-
-                        <button
-                            class="comparison-mode-button"
-                            data-mode="custom"
-                            type="button"
-                        >
-                            Custom Ratings
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =========================================
-                     TRADITIONAL MODE
-                     ========================================= -->
-
-                <div
-                    id="traditional-comparison"
-                    class="comparison-panel active"
-                >
-
-                    <div
-                        id="traditional-comparison-grid"
-                        class="comparison-table-wrapper"
-                    >
-                    </div>
-
-                </div>
-
-
-
-                <!-- =========================================
-                     CUSTOM MODE
-                     ========================================= -->
-
-                <div
-                    id="custom-comparison"
-                    class="comparison-panel"
-                >
-
-
-                    <div class="custom-comparison-layout">
-
-
-                        <div class="radar-card">
-
-                            <div class="radar-heading">
-
-                                <div>
-
-                                    <p class="eyebrow">
-                                        Custom Ratings
-                                    </p>
-
-                                    <h3>
-                                        Season Shape
-                                    </h3>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="radar-chart-wrapper">
-
-                                <canvas id="ratings-radar-chart">
-                                </canvas>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="overall-comparison-card">
-
-                            <p class="eyebrow">
-                                Overall
-                            </p>
-
-                            <div
-                                id="overall-comparison"
-                                class="overall-comparison-list"
-                            >
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div
-                        id="custom-ratings-table"
-                        class="comparison-table-wrapper custom-rating-table"
-                    >
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-    </main>
-
-
-
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
-
-    <footer class="site-footer">
+    <section class="compare-hero">
 
         <div class="container">
 
-            <p>
-                Independent fan-built statistical project.
-                Not affiliated with or endorsed by the WNBA,
-                NBA, or any WNBA team.
+            <p class="eyebrow">
+                Player Comparison
+            </p>
+
+            <h1>
+                Compare Seasons
+            </h1>
+
+            <p class="compare-intro">
+                Compare up to four player-seasons across eras
+                using traditional statistics and CourtIndex
+                custom ratings.
             </p>
 
         </div>
 
-    </footer>
+    </section>
 
 
 
     <!-- =====================================================
-         CHART.JS
+         PLAYER SELECTORS
          ===================================================== -->
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/chart.js"
-    ></script>
+    <section class="compare-builder">
+
+        <div class="container">
+
+            <div
+                id="comparison-selectors"
+                class="comparison-selectors"
+            >
+            </div>
+
+
+            <div class="comparison-actions">
+
+                <button
+                    id="add-player-button"
+                    class="compare-button secondary-compare-button"
+                    type="button"
+                >
+                    + Add Player
+                </button>
+
+
+                <button
+                    id="clear-comparison-button"
+                    class="compare-button ghost-compare-button"
+                    type="button"
+                >
+                    Reset
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
 
 
     <!-- =====================================================
-         COURTINDEX JS
+         RESULTS
          ===================================================== -->
 
-    <script src="./js/compare.js"></script>
+    <section class="comparison-results">
+
+        <div class="container">
+
+
+            <div class="comparison-toolbar">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Comparison View
+                    </p>
+
+                    <h2>
+                        Season Comparison
+                    </h2>
+
+                </div>
+
+
+                <div class="comparison-mode-toggle">
+
+                    <button
+                        class="comparison-mode-button active"
+                        data-mode="traditional"
+                        type="button"
+                    >
+                        Traditional
+                    </button>
+
+
+                    <button
+                        class="comparison-mode-button"
+                        data-mode="custom"
+                        type="button"
+                    >
+                        Custom Ratings
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 TRADITIONAL
+                 ================================================= -->
+
+            <div
+                id="traditional-comparison"
+                class="comparison-panel active"
+            >
+
+                <div class="compare-dashboard">
+
+
+                    <section class="radar-card">
+
+                        <div class="radar-heading">
+
+                            <div>
+
+                                <p class="eyebrow">
+                                    Traditional Profile
+                                </p>
+
+                                <h3>
+                                    Statistical Shape
+                                </h3>
+
+                            </div>
+
+
+                            <p class="chart-note">
+                                Radar values are season-relative
+                                percentiles. Raw statistics appear below.
+                            </p>
+
+                        </div>
+
+
+                        <div class="radar-chart-wrapper">
+
+                            <canvas
+                                id="traditional-radar-chart"
+                            >
+                            </canvas>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <aside
+                        id="traditional-summary"
+                        class="comparison-summary-card"
+                    >
+                    </aside>
+
+                </div>
+
+
+                <div
+                    id="traditional-metrics"
+                    class="metric-comparison-list"
+                >
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CUSTOM
+                 ================================================= -->
+
+            <div
+                id="custom-comparison"
+                class="comparison-panel"
+            >
+
+                <div class="compare-dashboard">
+
+
+                    <section class="radar-card">
+
+                        <div class="radar-heading">
+
+                            <div>
+
+                                <p class="eyebrow">
+                                    Custom Ratings
+                                </p>
+
+                                <h3>
+                                    Season Shape
+                                </h3>
+
+                            </div>
+
+
+                            <p class="chart-note">
+                                All CourtIndex ratings use the same
+                                0–100 scale.
+                            </p>
+
+                        </div>
+
+
+                        <div class="radar-chart-wrapper">
+
+                            <canvas
+                                id="ratings-radar-chart"
+                            >
+                            </canvas>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <aside
+                        id="overall-comparison"
+                        class="overall-comparison-card"
+                    >
+                    </aside>
+
+                </div>
+
+
+                <div
+                    id="custom-metrics"
+                    class="metric-comparison-list"
+                >
+                </div>
+
+
+                <section class="archetype-help">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            Season Archetypes
+                        </p>
+
+                        <h3>
+                            What do the labels mean?
+                        </h3>
+
+                    </div>
+
+
+                    <button
+                        id="archetype-help-button"
+                        class="learn-more-button"
+                        type="button"
+                    >
+                        View archetype guide
+                    </button>
+
+                </section>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =========================================================
+     METRIC INFO MODAL
+     ========================================================= -->
+
+<div
+    id="metric-modal"
+    class="info-modal"
+    hidden
+>
+
+    <div
+        class="info-modal-backdrop"
+        data-close-modal
+    >
+    </div>
+
+
+    <article class="info-modal-card">
+
+        <button
+            class="modal-close-button"
+            type="button"
+            data-close-modal
+        >
+            ×
+        </button>
+
+
+        <p class="eyebrow">
+            Metric Guide
+        </p>
+
+
+        <h2 id="metric-modal-title">
+        </h2>
+
+
+        <p
+            id="metric-modal-description"
+            class="modal-description"
+        >
+        </p>
+
+
+        <div id="metric-model-details">
+        </div>
+
+    </article>
+
+</div>
+
+
+
+<!-- =========================================================
+     ARCHETYPE MODAL
+     ========================================================= -->
+
+<div
+    id="archetype-modal"
+    class="info-modal"
+    hidden
+>
+
+    <div
+        class="info-modal-backdrop"
+        data-close-archetype
+    >
+    </div>
+
+
+    <article class="info-modal-card archetype-modal-card">
+
+        <button
+            class="modal-close-button"
+            type="button"
+            data-close-archetype
+        >
+            ×
+        </button>
+
+
+        <p class="eyebrow">
+            CourtIndex Guide
+        </p>
+
+
+        <h2>
+            Season Archetypes
+        </h2>
+
+
+        <p class="modal-description">
+            Archetypes are descriptive summaries of the
+            shape of a player's season ratings. They are
+            not positions or awards.
+        </p>
+
+
+        <div
+            id="archetype-guide"
+            class="archetype-guide"
+        >
+        </div>
+
+    </article>
+
+</div>
+
+
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <p>
+            Independent fan-built statistical project.
+            Not affiliated with or endorsed by the WNBA,
+            NBA, or any WNBA team.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+>
+</script>
+
+<script src="./js/compare.js"></script>
 
 
 </body>
